@@ -1,0 +1,470 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/toast.min.css">
+    <link rel="stylesheet" href="assets/css/core.css">
+    <link rel="stylesheet" href="assets/css/JuanFi.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>JuanFi - Status</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/pako.min.js"></script>
+    <script src="assets/js/qrcode.min.js"></script>
+    <style>
+        #insertBtn {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            animation: btnWiggle 3s infinite;
+        }
+
+        @keyframes btnWiggle {
+            0% { transform: rotate(0deg); }
+            2% { transform: rotate(-3deg); }
+            3.5% { transform: rotate(3deg); }
+            5% { transform: rotate(0deg); }
+            10.5% { transform: rotate(-3deg); }
+            20% { transform: rotate(3deg); }
+            23% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        #qr-input-file {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
+    <script>
+        var loginError = "";
+        var mac = "$(mac)";
+        var logoutUrl = "$(link-logout)";
+        var hotspotAddress = "$(server-address)"; 
+        var interfaceName = "$(interface-name)";
+        var remainingTimer = null;
+    </script>
+</head>
+
+<body id="loginBody">
+    <div id="fb-root"></div>
+    <div id="fb-customer-chat" class="fb-customerchat"></div>
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "108240834062058");
+        chatbox.setAttribute("attribution", "biz_inbox");
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml: true,
+                version: 'v12.0'
+            });
+        };
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <div class="container">
+        <form action="$(link-logout)" name="logout"></form>
+        <form action="$(link-logout)" name="forcelogout">
+            <input type="hidden" name="erase-cookie" value="true" />
+        </form>
+        <div class="info-login-group">
+            <div class="banner">
+                <img src="assets/MainPic.PNG" class="img-fluid" alt="JuanFi Banner" />
+            </div>
+            <div class="info">
+                <div class="info-ip">
+                    <img src="assets/img/ip.png" width="20" height="20" alt="IP Icon" />
+                    <span>$(ip)</span>
+                </div>
+                <div class="info-mac">
+                    <img src="assets/img/mac.png" width="20" height="20" alt="MAC Icon" />
+                    <span>$(mac)</span>
+                </div>
+                <div class="status-connected">Status: <span class="blinking2" id="connectionStatus">Connected</span></div>
+            </div>
+            <div class="login">
+                <div class="info-status">
+                    <div class="status-holder">
+                        <div class="info-title"><img src="assets/img/voucher.png" width="20" height="20" alt="Voucher Icon" /><span>Voucher</span></div>
+                        <span style="font-size: 1.25rem; font-weight: bold">$(username)</span>
+                    </div>
+                    <div class="break"></div>
+                    <div class="status-holder">
+                        <div class="info-title"><img src="assets/img/time.png" width="20" height="20" alt="Time Icon" /><span>Remaining Time</span></div>
+                        <span class="odometer" id="remainTime" style="font-size: 1rem; font-weight: bold"></span>
+                    </div>
+                    <div class="break"></div>
+                    <div class="status-holder">
+                        <div class="info-title"><img src="assets/img/timeexpired.png" width="20" height="20" alt="Expiration Icon" /><span>Expiration Time</span></div>
+                        <span id="expirationTime" style="font-size: 1rem; font-weight: bold"></span>
+                    </div>
+                    <div class="break"></div>
+                    <div class="status-holder">
+                        <div class="info-title"><img src="assets/img/data.png" width="20" height="20" alt="Data Icon" /><span>Data Usage</span></div>
+                        <div><img src="assets/img/upload.png" width="20" height="20" alt="Upload Icon" /><span style="font-size: 1rem; font-weight: bold">$(bytes-in-nice)</span></div>
+                        <div><img src="assets/img/download.png" width="20" height="20" alt="Download Icon" /><span style="font-size: 1rem; font-weight: bold">$(bytes-out-nice)</span></div>
+                        <div class="inscoinholder" id="dataInfoDiv2">
+                            <span id="totalDataInfo" style="font-size: 1rem; font-weight: bold; color: #EDEDED">$(remain-bytes-total-nice)</span><br>
+                            <span>Remaining Data</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="vendoSelectDiv">
+                    <label for="vendoSelected">Select Vendo</label>
+                    <select class="form-control" name="vendoSelected" id="vendoSelected"></select>
+                </div>
+                <div id="rateTypeDiv">
+                    <label for="rateType" class="rate-title"><b>Rate Type</b></label>
+                    <select name="rateType" class="form-control" id="rateType" onChange="onRateTypeChange(this)">
+                        <option value="1">Internet</option>
+                        <option value="2">Charging</option>
+                    </select>
+                </div>
+                <div id="ratesBody">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Coins (PHP)</th>
+                                <th>Time</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5</td>
+                                <td>1 hour</td>
+                                <td>Basic Internet Access</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>3 hours</td>
+                                <td>Extended Internet Access</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>30 minutes</td>
+                                <td>Device Charging</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="insertBtn" onclick="insertBtnAction(); return false" class="btn btn-success" data-insert-type="extend" data-toggle="modal">EXTEND TIME</button>
+                <button type="button" id="pauseTimeBtn" onClick="pause(); return false" class="btn btn-danger">PAUSE TIME</button>
+                <button type="button" id="chargingBtn" onclick="chargingBtnAction(); return false" class="btn btn-secondary">CHARGING STATION</button>
+                <button type="button" id="eloadBtn" onclick="eloadBtnAction(); return false" class="btn btn-info">E-LOAD</button>
+                <button type="button" id="scanQrBtn" onclick="$('#scanQrModal').modal('show'); return false" class="btn btn-primary" style="display: none">PURCHASE VIA QR</button>
+            </div>
+        </div>
+        <div class="voucher-group">
+            <div class="form-group">
+                <label for="voucherInput">Current Voucher Code</label>
+                <input type="text" class="form-control" id="voucherInput" value="$(username)" readonly aria-describedby="voucherHelp">
+            </div>
+        </div>
+        <div class="modal fade" id="insertCoinModal" style="z-index: 1500" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="insertCoinModalTitle">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="insertCoinModalTitle">Please insert the coin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="progress">
+                            <div id="progressDiv" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 24px"></div>
+                        </div>
+                        <div id="noticeDiv" style="display: none">
+                            <h4 id="noticeText">Coin is reading, please wait</h4>
+                        </div>
+                        <div class="inscoin">
+                            <div class="inscoinholder vcCodeHolder" id="vcCodeDiv">
+                                <span>Your code is</span><br>
+                                <span id="codeGeneratedBlock">
+                                    <span id="codeGenerated" style="font-size: 1.5rem; font-weight: bold; color: #EDEDED">*****</span>
+                                </span>
+                            </div>
+                            <div class="inscoinholder convertVoucherBlock" id="convertVoucherBlockDiv">
+                                <span>Convert unused voucher</span><br>
+                                <input type="text" class="form-control" id="convertVoucherCode" placeholder=" ">
+                                <label for="convertVoucherCode">Enter voucher</label>
+                                <button type="button" id="convertBtn" class="btn btn-success" onclick="convertVoucherAction(); return false">CONVERT</button>
+                            </div>
+                            <div class="inscoinholder">
+                                <span id="totalCoin" style="font-size: 1rem; font-weight: bold; color: #EDEDED">0</span><span style="font-size: 1rem; font-weight: bold; color: #EDEDED">.00 Php</span><br>
+                                <span>Coin</span>
+                            </div>
+                            <div class="inscoinholder" id="totalTimeDiv">
+                                <span id="totalTime" style="font-size: 1rem; font-weight: bold; color: #EDEDED"></span><br>
+                                <span>Time:</span>
+                            </div>
+                            <div class="inscoinholder" id="expectedCoinDiv" style="display: none">
+                                <span id="expectedCoin" style="font-size: 1rem; font-weight: bold; color: #EDEDED"></span><br>
+                                <span>Expected Coin</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveVoucherButton" data-save-type="extend" onclick="saveVoucherBtnAction(); return false" class="btn btn-primary" data-dismiss="modal">DONE</button>
+                        <button type="button" id="cncl" class="btn btn-danger" data-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="chargingModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Charging Station</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="chargingBody"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="eloadModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">E-LOAD</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="eloadingBody">
+                            <h4 id="eloadConfirm" style="display: none"><span style="color: #EDEDED">CONFIRM YOUR SELECTED DETAILS</span></h4>
+                            <div id="mobileNumDiv" class="input-bottom-space-20px">
+                                <input type="number" class="form-control" id="mobileNo" placeholder=" " aria-describedby="mobileNo" pattern="\d*" maxlength="11" required>
+                                <label for="mobileNo">Mobile #</label>
+                            </div>
+                            <div id="loadTypeDiv" style="display: none;" class="input-bottom-space-20px">
+                                <label for="loadTypeSelected">Select Load Type</label>
+                                <select class="form-control" name="loadType" onChange="loadTypeChanged(this)" id="loadTypeSelected"></select>
+                            </div>
+                            <div id="productTypeDiv" style="display: none;" class="input-bottom-space-20px">
+                                <label for="productTypeSelected">Select Product</label>
+                                <select class="form-control input-bottom-space-20px" name="productType" id="productTypeSelected" onChange="productTypeChanged(this)"></select>
+                                <input type="text" class="form-control" id="price" placeholder=" " aria-describedby="mobileNo" disabled>
+                                <label for="price">Price (PHP)</label>
+                            </div>
+                            <h5 id="eloadConfirm2" style="display: none;" class="input-bottom-space-20px"><span style="color: #EDEDED">Please make sure to insert the exact amount <ul style="font-size: small; color: #EDEDED; text-align: left;"><li>In case there's an excess amount or amount is insufficient, it will be converted to a voucher code and you can use it for your next e-Loading or on internet service.</li></ul></span></h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="buyEloadPrevBtn" class="btn btn-danger" onclick="buyEloadPrevAction(); return false">CLOSE</button>
+                        <button type="button" id="buyEloadBtn" onclick="buyEloadAction(); return false" class="btn btn-success">NEXT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="scanQrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Purchase Voucher using QR Code</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Present this QR code to the vendo owner</p>
+                        <div id="qrcode" class="qrcode-wrapper"></div>
+                        <p>Once your request has been approved you will be automatically logged in.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="footers">
+                Powered by: <a href="https://www.facebook.com/groups/1172413279934139">JuanFi System v4.1</a> © All rights reserved 2022
+            </span>
+        </div>
+        <div id="loaderDiv" class="spinner hidden">
+            <img src="assets/loading.svg" alt="Loading" />
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/toast.min.js"></script>
+    <script src="assets/js/core.js"></script>
+    <script src="assets/js/eload.js"></script>
+    <script src="assets/js/pako.min.js"></script>
+    <script>
+        var sessiontime = "$(session-time-left-secs)";
+        var uptime = "$(uptime-secs)";
+        var currentVoucher = "$(username)";
+        window.name="hotspot_status";
+        var uIp = "$(ip)";
+        var purchaseInfo = "juanfi://purchasevoucher?mac="+mac+"&ip="+uIp;
+        
+        $(document).ready(function(){
+            voucher = currentVoucher;
+            $("#expirationTime").html("Loading...");
+            setTimeout(function(){
+                fetchValidity(1);
+            }, 1000);
+            
+            setStorageValue('activeVoucher', currentVoucher);
+            new QRCode(document.getElementById("qrcode"), JSON.stringify(purchaseInfo));
+            
+            var time = sessiontime;
+            if(time == "0"){
+                $("#remainTime").html("Unlimited");
+            }else{
+                $("#remainTime").html(secondsToDhms(time));
+                remainingTimer = setInterval(function(){
+                    time--;
+                    $("#remainTime").html(secondsToDhms(time));
+                    if(time <= 0){
+                        $.toast({
+                            title: 'Success',
+                            content: 'Time limit exceeded, Thank you for the purchase, will be logout shortly',
+                            type: 'success',
+                            delay: 5000
+                        });
+                        clearInterval(remainingTimer);
+                        setTimeout(function(){
+                            document.logout.submit();
+                        }, 6000);
+                    }
+                }, 1000);
+            }
+        });
+        
+        function fetchValidity(retryNo){
+            if(retryNo > 5){
+                fallbackValidity();
+                return;
+            }
+            var macNoColon = replaceAll(mac, ":");
+            $.ajax({
+                type: "GET",
+                url: "/data/"+macNoColon+".txt?query="+new Date().getTime(),
+                success: function(data){
+                    if(data.length > 50){
+                        setTimeout(function(){
+                            fetchValidity(retryNo++);
+                        }, 1000);
+                        return;
+                    }
+                    var macData = data.split("#");
+                    var validityRaw = macData[1];
+                    
+                    var validityTime = null;
+                    if(validityRaw.length > 15){
+                        validityTime = new Date(Date.parse(validityRaw));
+                    }else if(validityRaw.length > 8){
+                        var dt = validityRaw.split(" ");
+                        var yr = new Date().getFullYear();
+                        validityTime = new Date(Date.parse(dt[0]+"/"+yr+" "+dt[1]));
+                    }else if(validityRaw.length == 0){
+                        validityTime = null;
+                    } else{
+                        var curDate = new Date();
+                        var m = curDate.getMonth()+1;
+                        var d = curDate.getDate();
+                        var yr = curDate.getFullYear();
+                        validityTime = new Date(Date.parse(m+"/"+d+"/"+yr+" "+validityRaw));
+                    }
+                    if(validityTime != null){
+                        $("#expirationTime").html(validityTime.toLocaleString());
+                    }else{
+                        $("#expirationTime").html("No Expiration");
+                    }
+                },
+                error: function(d){
+                    fallbackValidity();
+                }
+            });			
+        }
+        
+        function fallbackValidity(){
+            var validity = getStorageValue(voucher+"validity");
+            if(validity != null){
+                var curDate = new Date();
+                var validityTime = new Date(parseInt(validity));
+                if(validityTime.getTime() < curDate.getTime()){
+                    removeStorageValue(voucher+"validity");
+                    removeStorageValue(voucher+"tempValidity");
+                    $("#expirationTime").html("Not Available");
+                }else{
+                    $("#expirationTime").html(validityTime.toLocaleString());
+                }
+            }else{
+                $("#expirationTime").html("Not Available");
+            }
+        }
+        
+        $(if refresh-timeout)
+            setInterval(function(){
+                if(!insertingCoin){
+                    location.reload();
+                }
+            }, $(refresh-timeout-secs) * 1000);
+        $(endif)
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a3fab3ee7b458e',t:'MTc0NjMxOTU2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b9ba5afc686776',t:'MTc0NjU0NzYxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
