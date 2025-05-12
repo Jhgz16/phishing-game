@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Awareness Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto p-4 max-w-4xl">
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">Phishing Awareness Quiz</h1>
+      <p class="text-gray-600 mt-2">Test your skills against real-world phishing emails and SMS. Can you spot the scams?</p>
+    </header>
+
+    <!-- Progress Tracker -->
+    <div class="mb-6">
+      <div class="flex justify-between items-center">
+        <p class="text-gray-700">Question <span id="current-question">1</span> of <span id="total-questions">10</span></p>
+        <p class="text-gray-700">Score: <span id="score">0</span></p>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 10%"></div>
+      </div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="bg-white shadow-lg rounded-lg p-6">
+      <!-- Message Display -->
+      <div id="message-display" class="border border-gray-300 rounded-lg p-4 mb-4">
+        <div id="message-header" class="flex justify-between items-center mb-2">
+          <span id="sender" class="font-semibold"></span>
+          <span id="difficulty" class="text-sm text-gray-500"></span>
+        </div>
+        <p id="subject" class="font-medium mb-2"></p>
+        <div id="message-body" class="text-gray-700"></div>
+      </div>
+
+      <!-- Answer Buttons -->
+      <div class="flex justify-center space-x-4">
+        <button id="legitimate-btn" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Legitimate</button>
+        <button id="phishing-btn" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">Phishing</button>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white rounded-lg p-6 max-w-lg w-full">
+        <h2 id="feedback-title" class="text-xl font-bold mb-4"></h2>
+        <p id="feedback-message" class="text-gray-700 mb-4"></p>
+        <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</button>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-container" class="hidden bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Quiz Complete!</h2>
+      <p class="text-gray-700 mb-4">Your final score: <span id="final-score"></span> out of 10</p>
+      <p id="results-message" class="text-gray-700 mb-4"></p>
+      <div id="difficulty-breakdown" class="text-gray-700 mb-4"></div>
+      <button id="restart-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Restart Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      // Easy Questions (20)
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'PayPal Support <support@paypall-service.com>',
+        subject: 'Account Limited - Action Required!',
+        body: 'Dear Customer,<br>Your PayPal account is limited due to suspicious activity. Verify now at <a href="http://paypall-secure.com/verify" onmouseover="showURL(\'http://paypall-secure.com/verify\')" onmouseout="hideURL()">paypall-secure.com</a> to restore access.<br>PayPal Team',
+        isPhishing: true,
+        feedback: 'This is a phishing email. The domain "paypall-service.com" has an extra "l" compared to "paypal.com". Urgent requests to click links are a common phishing tactic. Always verify the sender’s domain.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'GCash Alert',
+        subject: 'Account Security Notice',
+        body: 'GCash: Your account is locked! Verify now at <a href="http://gcashh.ph/verify" onmouseover="showURL(\'http://gcashh.ph/verify\')" onmouseout="hideURL()">gcashh.ph/verify</a>.',
+        isPhishing: true,
+        feedback: 'This is a smishing attempt. The domain "gcashh.ph" has an extra "h" and isn’t "gcash.com". Legitimate GCash messages don’t include links for verification. Use the official app.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Netflix Support <support@netflix.com>',
+        subject: 'Subscription Renewed',
+        body: 'Dear Member,<br>Your Netflix subscription is renewed. Next billing: May 20, 2025. View details <a href="https://www.netflix.com/youraccount" onmouseover="showURL(\'https://www.netflix.com/youraccount\')" onmouseout="hideURL()">here</a>.<br>Netflix Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain is "netflix.com", and the link points to the official site. No urgent or suspicious requests are present.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'BDO Security',
+        subject: 'Unusual Activity',
+        body: 'BDO: Unusual activity detected. Secure your account at <a href="http://bdo-secure.com/login" onmouseover="showURL(\'http://bdo-secure.com/login\')" onmouseout="hideURL()">bdo-secure.com/login</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. The domain "bdo-secure.com" isn’t BDO’s "bdo.com.ph". Banks don’t send SMS with login links. Contact BDO directly.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Amazon Support <amaz0n-support@amaz0n.co>',
+        subject: 'Your Order Confirmation',
+        body: 'Dear Customer,<br>Your order is confirmed. Track it at <a href="http://amaz0n-track.co" onmouseover="showURL(\'http://amaz0n-track.co\')" onmouseout="hideURL()">amaz0n-track.co</a>.<br>Amazon Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain "amaz0n.co" uses a zero instead of "o". The link is also fake. Check for typos in domains.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'Casino Royale',
+        subject: 'Free Bonus',
+        body: 'Claim your P1000 casino bonus at <a href="http://casino-royal.co/bonus" onmouseover="showURL(\'http://casino-royal.co/bonus\')" onmouseout="hideURL()">casino-royal.co/bonus</a>!',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royal.co" is not a legitimate casino domain. Unsolicited bonus offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Google Support <support@google.com>',
+        subject: 'Your Password Was Changed',
+        body: 'Dear User,<br>Your Google account password was updated on May 12, 2025. If this wasn’t you, secure your account <a href="https://accounts.google.com/signin" onmouseover="showURL(\'https://accounts.google.com/signin\')" onmouseout="hideURL()">here</a>.<br>Google Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain is "google.com", and the link is official. The message is calm and specific.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'GCash Promo',
+        subject: 'Win P500!',
+        body: 'GCash: You won P500! Claim at <a href="http://gcash-win.ph/claim" onmouseover="showURL(\'http://gcash-win.ph/claim\')" onmouseout="hideURL()">gcash-win.ph/claim</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-win.ph" is fake, not "gcash.com". Unsolicited prize offers are phishing attempts.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Microsoft Support <ms-support@micros0ft.com>',
+        subject: 'Account Verification Needed',
+        body: 'Dear User,<br>Verify your Microsoft account at <a href="http://micros0ft-verify.com" onmouseover="showURL(\'http://micros0ft-verify.com\')" onmouseout="hideURL()">micros0ft-verify.com</a> to avoid suspension.<br>Microsoft Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The domain "micros0ft.com" uses a zero instead of "o". Always check for domain typos.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'BDO Alert',
+        subject: 'Account Locked',
+        body: 'BDO: Your account is locked. Unlock it at <a href="http://bdo-unlock.co" onmouseover="showURL(\'http://bdo-unlock.co\')" onmouseout="hideURL()">bdo-unlock.co</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-unlock.co" is not "bdo.com.ph". Banks don’t send unlock links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Spotify Support <support@spotify.com>',
+        subject: 'Your Subscription Details',
+        body: 'Dear User,<br>Your Spotify Premium subscription is active. Next billing: May 25, 2025. Manage your plan <a href="https://www.spotify.com/account" onmouseover="showURL(\'https://www.spotify.com/account\')" onmouseout="hideURL()">here</a>.<br>Spotify Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "spotify.com". No suspicious requests are included.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'Casino Win',
+        subject: 'P2000 Bonus',
+        body: 'Win P2000 now! Claim at <a href="http://casino-bonus.ph" onmouseover="showURL(\'http://casino-bonus.ph\')" onmouseout="hideURL()">casino-bonus.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-bonus.ph" is not a legitimate casino. Bonus offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Apple Support <support@app1e.com>',
+        subject: 'Your Apple ID is Locked',
+        body: 'Dear User,<br>Your Apple ID is locked. Unlock it at <a href="http://app1e-id.com" onmouseover="showURL(\'http://app1e-id.com\')" onmouseout="hideURL()">app1e-id.com</a>.<br>Apple Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The domain "app1e.com" uses a "1" instead of "l". Check for homoglyphs in domains.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'GCash Support',
+        subject: 'Account Issue',
+        body: 'GCash: Your account needs verification. Click <a href="http://gcash-verify.co" onmouseover="showURL(\'http://gcash-verify.co\')" onmouseout="hideURL()">gcash-verify.co</a> now.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-verify.co" is fake, not "gcash.com". Verify accounts via the official app.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Chase Bank <support@chase.com>',
+        subject: 'Your Statement is Ready',
+        body: 'Dear Customer,<br>Your May 2025 statement is available. View it <a href="https://www.chase.com/statements" onmouseover="showURL(\'https://www.chase.com/statements\')" onmouseout="hideURL()">here</a>.<br>Chase Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "chase.com". The message is routine and non-urgent.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'BDO Promo',
+        subject: 'Free Points',
+        body: 'BDO: Earn 1000 points! Claim at <a href="http://bdo-promo.co" onmouseover="showURL(\'http://bdo-promo.co\')" onmouseout="hideURL()">bdo-promo.co</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-promo.co" is not "bdo.com.ph". Banks don’t send promo links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'Facebook Security <security@faceb00k.com>',
+        subject: 'Login Alert',
+        body: 'Dear User,<br>A new login was detected. Secure your account at <a href="http://faceb00k-security.com" onmouseover="showURL(\'http://faceb00k-security.com\')" onmouseout="hideURL()">faceb00k-security.com</a>.<br>Facebook Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The domain "faceb00k.com" uses zeros instead of "o". Check for domain typos.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'Casino Elite',
+        subject: 'P3000 Bonus',
+        body: 'Claim P3000 casino bonus at <a href="http://elite-casino.ph" onmouseover="showURL(\'http://elite-casino.ph\')" onmouseout="hideURL()">elite-casino.ph</a>!',
+        isPhishing: true,
+        feedback: 'This is smishing. "elite-casino.ph" is not a legitimate casino. Unsolicited SMS bonuses are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Easy',
+        sender: 'LinkedIn Support <support@linkedin.com>',
+        subject: 'Your Profile Update',
+        body: 'Dear User,<br>Your LinkedIn profile was updated on May 12, 2025. View changes <a href="https://www.linkedin.com/profile" onmouseover="showURL(\'https://www.linkedin.com/profile\')" onmouseout="hideURL()">here</a>.<br>LinkedIn Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "linkedin.com". The message is routine.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Easy',
+        sender: 'GCash Reward',
+        subject: 'P1000 Prize',
+        body: 'GCash: You won P1000! Claim at <a href="http://gcash-reward.ph" onmouseover="showURL(\'http://gcash-reward.ph\')" onmouseout="hideURL()">gcash-reward.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-reward.ph" is fake, not "gcash.com". Prize offers via SMS are scams.'
+      },
+      // Medium Questions (15)
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'BDO Online Banking <onlinebanking@bdo.com.ph>',
+        subject: 'Update Your Security Settings',
+        body: 'Dear Client,<br>We’ve updated our security protocols. Update your settings at <a href="http://bdo-online.ph/update" onmouseover="showURL(\'http://bdo-online.ph/update\')" onmouseout="hideURL()">bdo-online.ph</a> within 48 hours.<br>BDO Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain "bdo.com.ph" is correct, but the link "bdo-online.ph" is fake. Hover over links to verify URLs.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'GCash Support',
+        subject: 'Claim Your Reward',
+        body: 'GCash: You won P1000! Claim at <a href="http://gcash-promo.co/claim" onmouseover="showURL(\'http://gcash-promo.co/claim\')" onmouseout="hideURL()">gcash-promo.co/claim</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-promo.co" is not "gcash.com". Unsolicited prize offers are phishing attempts.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'Amazon Support <support@amazon.com>',
+        subject: 'Order #123456 Shipped',
+        body: 'Dear Customer,<br>Your order #123456 is shipped. Track it <a href="https://www.amazon.com/orders" onmouseover="showURL(\'https://www.amazon.com/orders\')" onmouseout="hideURL()">here</a>. Arrival: May 15, 2025.<br>Amazon Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "amazon.com". The message includes specific order details.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'BDO Security',
+        subject: 'Verify Transaction',
+        body: 'BDO: Verify your recent transaction at <a href="http://bdo-verify.ph" onmouseover="showURL(\'http://bdo-verify.ph\')" onmouseout="hideURL()">bdo-verify.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-verify.ph" is not "bdo.com.ph". Banks don’t send transaction verification links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'PayPal Security <security@paypal.com>',
+        subject: 'Confirm Your Payment',
+        body: 'Dear User,<br>A payment of $99.99 was made. If this wasn’t you, cancel it at <a href="http://paypal-confirm.co" onmouseover="showURL(\'http://paypal-confirm.co\')" onmouseout="hideURL()">paypal-confirm.co</a>.<br>PayPal Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "paypal.com", but the link "paypal-confirm.co" is fake. Verify links before clicking.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'Casino Royale',
+        subject: 'P5000 Bonus',
+        body: 'Claim your P5000 casino bonus at <a href="http://casino-royale.ph/bonus" onmouseover="showURL(\'http://casino-royale.ph/bonus\')" onmouseout="hideURL()">casino-royale.ph/bonus</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royale.ph" is not a legitimate casino. Bonus offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'Google Support <support@google.com>',
+        subject: 'Your Google Drive Storage',
+        body: 'Dear User,<br>Your Google Drive is almost full. Upgrade your storage <a href="https://www.google.com/drive/upgrade" onmouseover="showURL(\'https://www.google.com/drive/upgrade\')" onmouseout="hideURL()">here</a>.<br>Google Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "google.com". The message is a standard service notification.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'GCash Alert',
+        subject: 'Account Update',
+        body: 'GCash: Update your account details at <a href="http://gcash-update.co" onmouseover="showURL(\'http://gcash-update.co\')" onmouseout="hideURL()">gcash-update.co</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-update.co" is not "gcash.com". Account updates are done via the official app.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'Netflix Support <support@netflix.com>',
+        subject: 'Payment Issue',
+        body: 'Dear Member,<br>Your payment failed. Update your payment method at <a href="http://netflix-payment.co" onmouseover="showURL(\'http://netflix-payment.co\')" onmouseout="hideURL()">netflix-payment.co</a>.<br>Netflix Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "netflix.com", but the link "netflix-payment.co" is fake. Always verify links.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'BDO Support',
+        subject: 'Security Alert',
+        body: 'BDO: Security alert! Verify your account at <a href="http://bdo-alert.ph" onmouseover="showURL(\'http://bdo-alert.ph\')" onmouseout="hideURL()">bdo-alert.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-alert.ph" is not "bdo.com.ph". Banks don’t send security links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'Microsoft Support <support@microsoft.com>',
+        subject: 'Your Subscription Status',
+        body: 'Dear User,<br>Your Microsoft 365 subscription is active. Manage it <a href="https://www.microsoft.com/account" onmouseover="showURL(\'https://www.microsoft.com/account\')" onmouseout="hideURL()">here</a>.<br>Microsoft Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "microsoft.com". The message is routine.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'Casino Elite',
+        subject: 'P4000 Bonus',
+        body: 'Claim P4000 casino bonus at <a href="http://casino-elite.ph" onmouseover="showURL(\'http://casino-elite.ph\')" onmouseout="hideURL()">casino-elite.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-elite.ph" is not a legitimate casino. Bonus offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'Apple Support <support@apple.com>',
+        subject: 'Your iCloud Storage',
+        body: 'Dear User,<br>Your iCloud storage is full. Upgrade now <a href="https://www.apple.com/icloud/upgrade" onmouseover="showURL(\'https://www.apple.com/icloud/upgrade\')" onmouseout="hideURL()">here</a>.<br>Apple Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "apple.com". The message is a standard notification.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Medium',
+        sender: 'GCash Promo',
+        subject: 'P2000 Reward',
+        body: 'GCash: Claim your P2000 reward at <a href="http://gcash-promo.ph" onmouseover="showURL(\'http://gcash-promo.ph\')" onmouseout="hideURL()">gcash-promo.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-promo.ph" is not "gcash.com". Prize offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Medium',
+        sender: 'PayPal Support <support@paypal.com>',
+        subject: 'Verify Your Account',
+        body: 'Dear User,<br>Please verify your PayPal account at <a href="http://paypal-verify.co" onmouseover="showURL(\'http://paypal-verify.co\')" onmouseout="hideURL()">paypal-verify.co</a>.<br>PayPal Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "paypal.com", but the link "paypal-verify.co" is fake. Check URLs carefully.'
+      },
+      // Hard Questions (10)
+      {
+        type: 'email',
+        difficulty: 'Hard',
+        sender: 'GCash Support <support@gcash.com>',
+        subject: 'Security Breach - Verify Account',
+        body: 'Dear User,<br>Due to a security breach, verify your GCash account at <a href="http://gcash-login.ph/verify" onmouseover="showURL(\'http://gcash-login.ph/verify\')" onmouseout="hideURL()">gcash-login.ph</a>.<br>GCash Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain "gcash.com" is spoofed, and the link "gcash-login.ph" is fake. Even trusted domains can be spoofed. Access services directly.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Hard',
+        sender: 'BDO Security',
+        subject: 'Transaction Alert',
+        body: 'BDO: P10,000 transaction detected. Verify at <a href="http://bdo-transaction.ph" onmouseover="showURL(\'http://bdo-transaction.ph\')" onmouseout="hideURL()">bdo-transaction.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-transaction.ph" is not "bdo.com.ph". Banks don’t send transaction verification links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Hard',
+        sender: 'PayPal Security <security@paypal.com>',
+        subject: 'New Device Login',
+        body: 'Dear User,<br>A login from a new device was detected on May 12, 2025. If this wasn’t you, secure your account <a href="https://www.paypal.com/signin" onmouseover="showURL(\'https://www.paypal.com/signin\')" onmouseout="hideURL()">here</a>.<br>PayPal Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "paypal.com". The message is specific and non-urgent.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Hard',
+        sender: 'GCash Support',
+        subject: 'Account Verification',
+        body: 'GCash: Verify your account due to unusual activity at <a href="http://gcash-secure.ph" onmouseover="showURL(\'http://gcash-secure.ph\')" onmouseout="hideURL()">gcash-secure.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-secure.ph" is not "gcash.com". Verification requests via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Hard',
+        sender: 'Amazon Support <support@amazon.com>',
+        subject: 'Your Account Needs Attention',
+        body: 'Dear Customer,<br>Your Amazon account requires verification. Log in at <a href="http://amazon-verify.co" onmouseover="showURL(\'http://amazon-verify.co\')" onmouseout="hideURL()">amazon-verify.co</a>.<br>Amazon Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "amazon.com", but the link "amazon-verify.co" is fake. Spoofed sender addresses are common.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Hard',
+        sender: 'Casino Royale',
+        subject: 'P6000 Bonus',
+        body: 'Claim your P6000 casino bonus at <a href="http://casino-royale.co" onmouseover="showURL(\'http://casino-royale.co\')" onmouseout="hideURL()">casino-royale.co</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royale.co" is not a legitimate casino. Bonus offers via SMS are scams.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Hard',
+        sender: 'Microsoft Support <support@microsoft.com>',
+        subject: 'Security Alert',
+        body: 'Dear User,<br>A login attempt was blocked on May 12, 2025. Secure your account <a href="https://www.microsoft.com/security" onmouseover="showURL(\'https://www.microsoft.com/security\')" onmouseout="hideURL()">here</a>.<br>Microsoft Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "microsoft.com". The message is specific and calm.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Hard',
+        sender: 'BDO Alert',
+        subject: 'Security Update',
+        body: 'BDO: Update your security settings at <a href="http://bdo-security.ph" onmouseover="showURL(\'http://bdo-security.ph\')" onmouseout="hideURL()">bdo-security.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-security.ph" is not "bdo.com.ph". Security updates are not requested via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Hard',
+        sender: 'Netflix Support <support@netflix.com>',
+        subject: 'Account Verification',
+        body: 'Dear Member,<br>Verify your Netflix account at <a href="http://netflix-verify.co" onmouseover="showURL(\'http://netflix-verify.co\')" onmouseout="hideURL()">netflix-verify.co</a>.<br>Netflix Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "netflix.com", but the link "netflix-verify.co" is fake. Verify URLs carefully.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Hard',
+        sender: 'GCash Promo',
+        subject: 'P3000 Reward',
+        body: 'GCash: Claim your P3000 reward at <a href="http://gcash-reward.co" onmouseover="showURL(\'http://gcash-reward.co\')" onmouseout="hideURL()">gcash-reward.co</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-reward.co" is not "gcash.com". Prize offers via SMS are scams.'
+      },
+      // Very Hard Questions (10)
+      {
+        type: 'email',
+        difficulty: 'Very Hard',
+        sender: 'GCash Support <support@gcash.com>',
+        subject: 'Your Recent Transaction',
+        body: 'Dear User,<br>Your recent P5000 transaction requires confirmation. Log in at <a href="http://gcash-login.com/confirm" onmouseover="showURL(\'http://gcash-login.com/confirm\')" onmouseout="hideURL()">gcash-login.com</a>.<br>GCash Team',
+        isPhishing: true,
+        feedback: 'This is spear-phishing. The sender’s domain "gcash.com" is spoofed, and the link "gcash-login.com" is fake. Specific transaction details make it convincing. Check email headers for spoofing.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Very Hard',
+        sender: 'BDO Security',
+        subject: 'Login Detected',
+        body: 'BDO: Login from new device on May 12, 2025. Verify at <a href="http://bdo-login.com" onmouseover="showURL(\'http://bdo-login.com\')" onmouseout="hideURL()">bdo-login.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-login.com" is not "bdo.com.ph". Specific login details make it convincing, but banks don’t send verification links via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Very Hard',
+        sender: 'PayPal Support <support@paypal.com>',
+        subject: 'Invoice #789123',
+        body: 'Dear User,<br>You received an invoice for $199.99. Pay or dispute it <a href="https://www.paypal.com/invoice" onmouseover="showURL(\'https://www.paypal.com/invoice\')" onmouseout="hideURL()">here</a>.<br>PayPal Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "paypal.com". The message references a specific invoice and is non-urgent.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Very Hard',
+        sender: 'GCash Support',
+        subject: 'Transaction Issue',
+        body: 'GCash: Your P2000 transaction failed. Retry at <a href="http://gcash-transaction.com" onmouseover="showURL(\'http://gcash-transaction.com\')" onmouseout="hideURL()">gcash-transaction.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-transaction.com" is not "gcash.com". Specific transaction details are used to trick users.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Very Hard',
+        sender: 'Amazon Support <support@amazon.com>',
+        subject: 'Your Prime Membership',
+        body: 'Dear Customer,<br>Your Amazon Prime membership needs renewal. Update your details at <a href="http://amazon-prime.com/renew" onmouseover="showURL(\'http://amazon-prime.com/renew\')" onmouseout="hideURL()">amazon-prime.com</a>.<br>Amazon Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "amazon.com", but the link "amazon-prime.com" is fake. Spoofed emails can be convincing.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Very Hard',
+        sender: 'Casino Royale',
+        subject: 'P7000 Bonus',
+        body: 'Claim your P7000 casino bonus at <a href="http://casino-royale.com/bonus" onmouseover="showURL(\'http://casino-royale.com/bonus\')" onmouseout="hideURL()">casino-royale.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royale.com" may seem legitimate, but it’s not a trusted casino. Verify casino offers directly.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Very Hard',
+        sender: 'Microsoft Support <support@microsoft.com>',
+        subject: 'Your Account Activity',
+        body: 'Dear User,<br>We detected unusual activity on May 12, 2025. Review it <a href="https://www.microsoft.com/account/activity" onmouseover="showURL(\'https://www.microsoft.com/account/activity\')" onmouseout="hideURL()">here</a>.<br>Microsoft Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "microsoft.com". The message is specific and non-urgent.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Very Hard',
+        sender: 'BDO Alert',
+        subject: 'Account Review',
+        body: 'BDO: Your account needs review. Log in at <a href="http://bdo-review.com" onmouseover="showURL(\'http://bdo-review.com\')" onmouseout="hideURL()">bdo-review.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "bdo-review.com" is not "bdo.com.ph". Account reviews are not requested via SMS.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Very Hard',
+        sender: 'Netflix Support <support@netflix.com>',
+        subject: 'Your Account Activity',
+        body: 'Dear Member,<br>Unusual activity detected. Secure your account at <a href="http://netflix-secure.com" onmouseover="showURL(\'http://netflix-secure.com\')" onmouseout="hideURL()">netflix-secure.com</a>.<br>Netflix Team',
+        isPhishing: true,
+        feedback: 'This is phishing. The sender’s domain is "netflix.com", but the link "netflix-secure.com" is fake. Spoofed emails require careful URL checks.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Very Hard',
+        sender: 'GCash Promo',
+        subject: 'P4000 Reward',
+        body: 'GCash: Claim your P4000 reward at <a href="http://gcash-promo.com" onmouseover="showURL(\'http://gcash-promo.com\')" onmouseout="hideURL()">gcash-promo.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "gcash-promo.com" is not "gcash.com". Prize offers via SMS are scams, even with specific details.'
+      },
+      // Extreme Questions (15)
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'GCash Support <support@gcash.com>',
+        subject: 'Your Transaction #456789',
+        body: 'Dear User,<br>Your transaction #456789 for P10,000 is pending. Confirm it at <a href="http://xn--gcsh-9sa.com/confirm" onmouseover="showURL(\'http://xn--gcsh-9sa.com/confirm\')" onmouseout="hideURL()">gcash.com/confirm</a>.<br>GCash Team',
+        isPhishing: true,
+        feedback: 'This is extreme phishing using a homoglyph domain "xn--gcsh-9sa.com" (disguised as "gcash.com"). Check for Unicode characters in domains. Experts verify email headers and DNS records.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'BDO Security',
+        subject: 'Transaction #123456',
+        body: 'BDO: Transaction #123456 for P15,000 needs verification at <a href="http://xn--bd0-9sa.com" onmouseover="showURL(\'http://xn--bd0-9sa.com\')" onmouseout="hideURL()">bdo.com.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing using a homoglyph domain "xn--bd0-9sa.com" (disguised as "bdo.com.ph"). Specific transaction details are convincing. Check URLs for Unicode characters.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'PayPal Support <support@paypal.com>',
+        subject: 'Your Account Activity',
+        body: 'Dear User,<br>A login was detected on May 12, 2025, from a new device. Review it <a href="https://www.paypal.com/activity" onmouseover="showURL(\'https://www.paypal.com/activity\')" onmouseout="hideURL()">here</a>.<br>PayPal Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "paypal.com". The message is specific and non-urgent. Experts verify via email headers.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'GCash Support',
+        subject: 'Account Suspension Notice',
+        body: 'GCash: Your account will be suspended unless verified at <a href="http://gcash.com.secure-login.co" onmouseover="showURL(\'http://gcash.com.secure-login.co\')" onmouseout="hideURL()">gcash.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing using a subdomain "gcash.com.secure-login.co" to mimic "gcash.com". Subtle domain tricks are hard to spot. Verify via official channels.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'Amazon Support <support@amazon.com>',
+        subject: 'Your Order #987654',
+        body: 'Dear Customer,<br>Your order #987654 requires verification. Log in at <a href="http://xn--amzon-9sa.com" onmouseover="showURL(\'http://xn--amzon-9sa.com\')" onmouseout="hideURL()">amazon.com</a>.<br>Amazon Team',
+        isPhishing: true,
+        feedback: 'This is phishing using a homoglyph domain "xn--amzon-9sa.com" (disguised as "amazon.com"). Experts check for Unicode characters and email headers.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'Casino Royale',
+        subject: 'P10,000 Bonus',
+        body: 'Claim your P10,000 casino bonus at <a href="http://casino-royale.com" onmouseover="showURL(\'http://casino-royale.com\')" onmouseout="hideURL()">casino-royale.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royale.com" seems legitimate but is not a trusted casino. Experts verify domain reputation and ownership.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'Microsoft Support <support@microsoft.com>',
+        subject: 'Security Advisory',
+        body: 'Dear User,<br>A security advisory was issued for your account. Review it <a href="https://www.microsoft.com/security/advisory" onmouseover="showURL(\'https://www.microsoft.com/security/advisory\')" onmouseout="hideURL()">here</a>.<br>Microsoft Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "microsoft.com". Experts verify via email headers and DNS.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'BDO Alert',
+        subject: 'Account Verification',
+        body: 'BDO: Verify your account at <a href="http://bdo.com.ph.secure-login.co" onmouseover="showURL(\'http://bdo.com.ph.secure-login.co\')" onmouseout="hideURL()">bdo.com.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing using a subdomain "bdo.com.ph.secure-login.co" to mimic "bdo.com.ph". Subtle tricks require careful URL inspection.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'Netflix Support <support@netflix.com>',
+        subject: 'Your Subscription #123456',
+        body: 'Dear Member,<br>Your subscription #123456 needs verification. Log in at <a href="http://xn--netflx-9sa.com" onmouseover="showURL(\'http://xn--netflx-9sa.com\')" onmouseout="hideURL()">netflix.com</a>.<br>Netflix Team',
+        isPhishing: true,
+        feedback: 'This is phishing using a homoglyph domain "xn--netflx-9sa.com" (disguised as "netflix.com"). Experts check for Unicode and email headers.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'GCash Promo',
+        subject: 'P5000 Reward',
+        body: 'GCash: Claim your P5000 reward at <a href="http://gcash.com.promo-login.co" onmouseover="showURL(\'http://gcash.com.promo-login.co\')" onmouseout="hideURL()">gcash.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing using a subdomain "gcash.com.promo-login.co" to mimic "gcash.com". Experts verify domain structure.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'PayPal Support <support@paypal.com>',
+        subject: 'Your Transaction #456123',
+        body: 'Dear User,<br>Your transaction #456123 for $500 is pending. Confirm it at <a href="http://paypal.com.secure-login.co" onmouseover="showURL(\'http://paypal.com.secure-login.co\')" onmouseout="hideURL()">paypal.com</a>.<br>PayPal Team',
+        isPhishing: true,
+        feedback: 'This is phishing using a subdomain "paypal.com.secure-login.co" to mimic "paypal.com". Experts check subdomains and headers.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'BDO Security',
+        subject: 'Login Alert',
+        body: 'BDO: Login detected on May 12, 2025. Verify at <a href="http://xn--bd0-9sa.com" onmouseover="showURL(\'http://xn--bd0-9sa.com\')" onmouseout="hideURL()">bdo.com.ph</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing using a homoglyph domain "xn--bd0-9sa.com" (disguised as "bdo.com.ph"). Check for Unicode characters.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'Amazon Support <support@amazon.com>',
+        subject: 'Your Account Security',
+        body: 'Dear Customer,<br>Your account requires security verification. Log in at <a href="http://amazon.com.secure-login.co" onmouseover="showURL(\'http://amazon.com.secure-login.co\')" onmouseout="hideURL()">amazon.com</a>.<br>Amazon Team',
+        isPhishing: true,
+        feedback: 'This is phishing using a subdomain "amazon.com.secure-login.co" to mimic "amazon.com". Experts verify subdomains and headers.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extreme',
+        sender: 'Casino Royale',
+        subject: 'P15,000 Bonus',
+        body: 'Claim your P15,000 casino bonus at <a href="http://casino-royale.com" onmouseover="showURL(\'http://casino-royale.com\')" onmouseout="hideURL()">casino-royale.com</a>.',
+        isPhishing: true,
+        feedback: 'This is smishing. "casino-royale.com" is not a trusted casino. Experts verify domain reputation and ownership.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extreme',
+        sender: 'Microsoft Support <support@microsoft.com>',
+        subject: 'Your Account Review',
+        body: 'Dear User,<br>Your account requires review due to activity on May 12, 2025. Log in at <a href="https://www.microsoft.com/account/review" onmouseover="showURL(\'https://www.microsoft.com/account/review\')" onmouseout="hideURL()">here</a>.<br>Microsoft Team',
+        isPhishing: false,
+        feedback: 'This is legitimate. The sender’s domain and link are from "microsoft.com". Experts verify via headers and DNS.'
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let sessionQuestions = [];
+    const totalQuestionsPerSession = 10;
+    const difficultyCounts = { Easy: 0, Medium: 0, Hard: 0, 'Very Hard': 0, Extreme: 0 };
+
+    // URL Hover Display
+    const urlDisplay = document.createElement('div');
+    urlDisplay.id = 'url-display';
+    urlDisplay.className = 'absolute bg-gray-800 text-white text-sm px-2 py-1 rounded hidden';
+    document.body.appendChild(urlDisplay);
+
+    function showURL(url) {
+      urlDisplay.textContent = url;
+      urlDisplay.classList.remove('hidden');
+      urlDisplay.style.top = `${event.pageY + 10}px`;
+      urlDisplay.style.left = `${event.pageX + 10}px`;
+    }
+
+    function hideURL() {
+      urlDisplay.classList.add('hidden');
+    }
+
+    // Select 10 random questions with balanced difficulty
+    function selectSessionQuestions() {
+      const easy = questions.filter(q => q.difficulty === 'Easy').sort(() => Math.random() - 0.5).slice(0, 3);
+      const medium = questions.filter(q => q.difficulty === 'Medium').sort(() => Math.random() - 0.5).slice(0, 3);
+      const hard = questions.filter(q => q.difficulty === 'Hard').sort(() => Math.random() - 0.5).slice(0, 2);
+      const veryHard = questions.filter(q => q.difficulty === 'Very Hard').sort(() => Math.random() - 0.5).slice(0, 1);
+      const extreme = questions.filter(q => q.difficulty === 'Extreme').sort(() => Math.random() - 0.5).slice(0, 1);
+      sessionQuestions = [...easy, ...medium, ...hard, ...veryHard, ...extreme].sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const question = sessionQuestions[currentQuestion];
+      document.getElementById('current-question').textContent = currentQuestion + 1;
+      document.getElementById('total-questions').textContent = totalQuestionsPerSession;
+      document.getElementById('sender').textContent = question.sender;
+      document.getElementById('subject').textContent = question.subject;
+      document.getElementById('difficulty').textContent = `Difficulty: ${question.difficulty}`;
+      document.getElementById('message-body').innerHTML = question.body;
+      document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / totalQuestionsPerSession) * 100}%`;
+
+      // Adjust styling for SMS vs Email
+      const messageDisplay = document.getElementById('message-display');
+      if (question.type === 'sms') {
+        messageDisplay.classList.add('max-w-md', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
+        messageDisplay.classList.remove('border-gray-300');
+      } else {
+        messageDisplay.classList.remove('max-w-md', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
+        messageDisplay.classList.add('border-gray-300');
+      }
+    }
+
+    function showFeedback(isCorrect, feedback) {
+      const modal = document.getElementById('feedback-modal');
+      const title = document.getElementById('feedback-title');
+      const message = document.getElementById('feedback-message');
+      title.textContent = isCorrect ? 'Correct!' : 'Incorrect';
+      title.className = isCorrect ? 'text-green-600' : 'text-red-600';
+      message.textContent = feedback;
+      modal.classList.remove('hidden');
+      if (isCorrect) difficultyCounts[sessionQuestions[currentQuestion].difficulty]++;
+    }
+
+    function showResults() {
+      document.getElementById('quiz-container').classList.add('hidden');
+      document.getElementById('results-container').classList.remove('hidden');
+      document.getElementById('final-score').textContent = score;
+      const resultsMessage = document.getElementById('results-message');
+      if (score >= 8) {
+        resultsMessage.textContent = 'Outstanding! You’re highly skilled at spotting phishing attempts, including advanced ones.';
+      } else if (score >= 5) {
+        resultsMessage.textContent = 'Good job! You caught several phishing attempts, but review the feedback for harder scenarios.';
+      } else {
+        resultsMessage.textContent = 'Needs practice. Phishing attacks are tricky, especially at higher difficulties. Retake the quiz to improve.';
+      }
+      const breakdown = document.getElementById('difficulty-breakdown');
+      breakdown.innerHTML = `
+        <p>Performance by Difficulty:</p>
+        <ul>
+          <li>Easy: ${difficultyCounts.Easy}/3 correct</li>
+          <li>Medium: ${difficultyCounts.Medium}/3 correct</li>
+          <li>Hard: ${difficultyCounts.Hard}/2 correct</li>
+          <li>Very Hard: ${difficultyCounts['Very Hard']}/1 correct</li>
+          <li>Extreme: ${difficultyCounts.Extreme}/1 correct</li>
+        </ul>
+      `;
+    }
+
+    // Event Listeners
+    document.getElementById('legitimate-btn').addEventListener('click', () => {
+      const question = sessionQuestions[currentQuestion];
+      const isCorrect = !question.isPhishing;
+      if (isCorrect) score++;
+      document.getElementById('score').textContent = score;
+      showFeedback(isCorrect, question.feedback);
+    });
+
+    document.getElementById('phishing-btn').addEventListener('click', () => {
+      const question = sessionQuestions[currentQuestion];
+      const isCorrect = question.isPhishing;
+      if (isCorrect) score++;
+      document.getElementById('score').textContent = score;
+      showFeedback(isCorrect, question.feedback);
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      document.getElementById('feedback-modal').classList.add('hidden');
+      currentQuestion++;
+      if (currentQuestion < totalQuestionsPerSession) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    document.get NicId('restart-btn').addEventListener('click', () => {
+      currentQuestion = 0;
+      score = 0;
+      Object.keys(difficultyCounts).forEach(key => difficultyCounts[key] = 0);
+      document.getElementById('score').textContent = score;
+      document.getElementById('quiz-container').classList.remove('hidden');
+      document.getElementById('results-container').classList.add('hidden');
+      selectSessionQuestions();
+      loadQuestion();
+    });
+
+    // Initialize Quiz
+    selectSessionQuestions();
+    loadQuestion();
+  </script>
+</body>
+</html>
