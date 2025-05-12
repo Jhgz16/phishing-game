@@ -10,19 +10,24 @@
       color: blue;
       text-decoration: underline;
     }
+    /* Ensure focus states for accessibility */
+    button:focus {
+      outline: none;
+      ring: 2px solid #2563eb;
+    }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <div class="container mx-auto p-4 max-w-4xl">
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+  <div class="container mx-auto p-2 sm:p-4 max-w-full sm:max-w-4xl flex-grow">
     <!-- Header -->
-    <header class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-800">Phishing Awareness Quiz</h1>
-      <p class="text-gray-600 mt-2">Test your ability to spot phishing emails and SMS. Can you identify the scams?</p>
+    <header class="text-center mb-4 sm:mb-8">
+      <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 clamp(1.5rem, 5vw, 2rem)">Phishing Awareness Quiz</h1>
+      <p class="text-gray-600 mt-2 text-sm sm:text-base">Test your ability to spot phishing emails and SMS. Can you identify the scams?</p>
     </header>
 
     <!-- Progress Tracker -->
-    <div class="mb-6">
-      <div class="flex justify-between items-center">
+    <div class="mb-4 sm:mb-6">
+      <div class="flex justify-between items-center text-sm sm:text-base">
         <p class="text-gray-700">Question <span id="current-question">1</span> of <span id="total-questions">10</span></p>
         <p class="text-gray-700">Score: <span id="score">0</span></p>
       </div>
@@ -32,38 +37,38 @@
     </div>
 
     <!-- Quiz Container -->
-    <div id="quiz-container" class="bg-white shadow-lg rounded-lg p-6">
+    <div id="quiz-container" class="bg-white shadow-lg rounded-lg p-4 sm:p-6">
       <!-- Message Display -->
-      <div id="message-display" class="border border-gray-300 rounded-lg p-4 mb-4">
+      <div id="message-display" class="border border-gray-300 rounded-lg p-3 sm:p-4 mb-4">
         <div id="message-header" class="flex justify-between items-center mb-2">
-          <span id="sender" class="font-semibold"></span>
+          <span id="sender" class="font-semibold text-sm sm:text-base"></span>
         </div>
-        <p id="subject" class="font-medium mb-2"></p>
-        <div id="message-body" class="text-gray-700"></div>
+        <p id="subject" class="font-medium mb-2 text-sm sm:text-base"></p>
+        <div id="message-body" class="text-gray-700 text-sm sm:text-base"></div>
       </div>
 
       <!-- Answer Buttons -->
-      <div class="flex justify-center space-x-4">
-        <button id="legitimate-btn" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Legitimate</button>
-        <button id="phishing-btn" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">Phishing</button>
+      <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+        <button id="legitimate-btn" class="bg-green-500 text-white px-4 py-3 rounded hover:bg-green-600 w-full sm:w-auto text-sm sm:text-base focus:ring-2 focus:ring-green-500" aria-label="Mark as Legitimate">Legitimate</button>
+        <button id="phishing-btn" class="bg-red-500 text-white px-4 py-3 rounded hover:bg-red-600 w-full sm:w-auto text-sm sm:text-base focus:ring-2 focus:ring-red-500" aria-label="Mark as Phishing">Phishing</button>
       </div>
     </div>
 
     <!-- Feedback Modal -->
-    <div id="feedback-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-      <div class="bg-white rounded-lg p-6 max-w-lg w-full">
-        <h2 id="feedback-title" class="text-xl font-bold mb-4"></h2>
-        <p id="feedback-message" class="text-gray-700 mb-4"></p>
-        <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</button>
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center" aria-live="polite">
+      <div class="bg-white rounded-lg p-4 sm:p-6 max-w-[90vw] sm:max-w-lg w-full">
+        <h2 id="feedback-title" class="text-lg sm:text-xl font-bold mb-4"></h2>
+        <p id="feedback-message" class="text-gray-700 mb-4 text-sm sm:text-base"></p>
+        <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto text-sm sm:text-base focus:ring-2 focus:ring-blue-500" aria-label="Next Question">Next</button>
       </div>
     </div>
 
     <!-- Results Screen -->
-    <div id="results-container" class="hidden bg-white shadow-lg rounded-lg p-6">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Quiz Complete!</h2>
-      <p class="text-gray-700 mb-4">Your final score: <span id="final-score"></span> out of 10</p>
-      <p id="results-message" class="text-gray-700 mb-4"></p>
-      <button id="restart-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Restart Quiz</button>
+    <div id="results-container" class="hidden bg-white shadow-lg rounded-lg p-4 sm:p-6">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Quiz Complete!</h2>
+      <p class="text-gray-700 mb-4 text-sm sm:text-base">Your final score: <span id="final-score"></span> out of 10</p>
+      <p id="results-message" class="text-gray-700 mb-4 text-sm sm:text-base"></p>
+      <button id="restart-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto text-sm sm:text-base focus:ring-2 focus:ring-blue-500" aria-label="Restart Quiz">Restart Quiz</button>
     </div>
   </div>
 
@@ -540,23 +545,11 @@
 
     // Select 10 questions: 6 Phishing, 4 Legitimate
     function getRandomQuestions() {
-      // Filter questions by type
       const phishingQuestions = questions.filter(q => q.isPhishing);
       const legitimateQuestions = questions.filter(q => !q.isPhishing);
-
-      // Select 6 phishing questions
       const phishingSelection = shuffle([...phishingQuestions]).slice(0, 6);
-
-      // Select 4 legitimate questions
       const legitimateSelection = shuffle([...legitimateQuestions]).slice(0, 4);
-
-      // Combine and shuffle all selected questions
-      const selectedQuestions = [
-        ...phishingSelection,
-        ...legitimateSelection
-      ];
-
-      return shuffle(selectedQuestions);
+      return shuffle([...phishingSelection, ...legitimateSelection]);
     }
 
     let currentQuestions = getRandomQuestions();
@@ -564,7 +557,7 @@
     // URL Hover Display
     const urlDisplay = document.createElement('div');
     urlDisplay.id = 'url-display';
-    urlDisplay.className = 'absolute bg-gray-800 text-white text-sm px-2 py-1 rounded hidden';
+    urlDisplay.className = 'absolute bg-gray-800 text-white text-xs sm:text-sm px-2 py-1 rounded hidden';
     document.body.appendChild(urlDisplay);
 
     function showURL(url) {
@@ -590,10 +583,10 @@
       // Adjust styling for SMS vs Email
       const messageDisplay = document.getElementById('message-display');
       if (question.type === 'sms') {
-        messageDisplay.classList.add('max-w-md', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
+        messageDisplay.classList.add('max-w-[80vw]', 'sm:max-w-sm', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
         messageDisplay.classList.remove('border-gray-300');
       } else {
-        messageDisplay.classList.remove('max-w-md', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
+        messageDisplay.classList.remove('max-w-[80vw]', 'sm:max-w-sm', 'mx-auto', 'bg-gray-50', 'border-2', 'border-gray-400');
         messageDisplay.classList.add('border-gray-300');
       }
     }
