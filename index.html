@@ -10,7 +10,6 @@
       color: blue;
       text-decoration: underline;
     }
-    /* Ensure focus states for accessibility */
     button:focus {
       outline: none;
       ring: 2px solid #2563eb;
@@ -74,7 +73,7 @@
 
   <script>
     const questions = [
-      // Easy Questions (8: 3 Legit, 5 Phishing)
+      // Easy Questions (8: 5 Phishing, 3 Legitimate)
       {
         type: 'email',
         difficulty: 'Easy',
@@ -147,7 +146,7 @@
         isPhishing: true,
         feedback: 'This is a smishing attempt. The domain "paymayaa.com" has an extra "a" and is not the official "paymaya.com".'
       },
-      // Medium Questions (14: 5 Legit, 9 Phishing)
+      // Medium Questions (14: 9 Phishing, 5 Legitimate)
       {
         type: 'email',
         difficulty: 'Medium',
@@ -274,7 +273,7 @@
         isPhishing: true,
         feedback: 'This is a phishing email. The link points to "ebay-verify.com", not the official "ebay.com". Verify purchases directly on eBay’s website.'
       },
-      // Hard Questions (14: 6 Legit, 8 Phishing)
+      // Hard Questions (14: 8 Phishing, 6 Legitimate)
       {
         type: 'email',
         difficulty: 'Hard',
@@ -401,7 +400,7 @@
         isPhishing: false,
         feedback: 'This is a legitimate email. The sender’s domain is "zoom.us", and the link points to the official Zoom meetings page.'
       },
-      // Extremely Difficult Questions (14: 6 Legit, 8 Phishing)
+      // Extremely Difficult Questions (24: 18 Phishing, 6 Legitimate)
       {
         type: 'email',
         difficulty: 'Extremely Difficult',
@@ -527,6 +526,96 @@
         body: '[Globe] Register for our latest promo at <a href="https://glоbe.com.ph/promo" onmouseover="showURL(\'https://glоbe.com.ph/promo\')" onmouseout="hideURL()">globe.com.ph/promo</a>.',
         isPhishing: true,
         feedback: 'This is a smishing scam. The domain "glоbe.com.ph" uses a Cyrillic "о" instead of Latin "o", making it nearly identical to "globe.com.ph". Homoglyph attacks are highly deceptive.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'AWS Security <security@aws.amazon.com>',
+        subject: 'SSO Login Verification Required',
+        body: '<div class="header" style="background-color: #FF9900; padding: 10px; text-align: center;"><img src="https://i.imgur.com/2n3k8qZ.png" alt="AWS Logo" style="height: 30px;"></div><p>Dear Admin,<br>Your AWS SSO session requires verification due to a new login attempt. Complete the process <a href="https://bit.ly/3xYz123" onmouseover="showURL(\'https://aws-security-login.com/verify\')" onmouseout="hideURL()">here</a> within 24 hours.<br>AWS Security Team</p>',
+        isPhishing: true,
+        feedback: 'This is a phishing email. The bit.ly link redirects to "aws-security-login.com", not the official "aws.amazon.com". Link shims like bit.ly obscure malicious destinations, and the domain is a fake subdomain.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extremely Difficult',
+        sender: 'GitLab Security',
+        subject: 'Pipeline Failure Alert',
+        body: '[GitLab] Your pipeline #7890 failed. Review details at <a href="https://tinyurl.com/yz789abc" onmouseover="showURL(\'https://git1ab.com/pipeline\')" onmouseout="hideURL()">tinyurl.com/yz789abc</a>.',
+        isPhishing: true,
+        feedback: 'This is a smishing scam. The tinyurl.com link redirects to "git1ab.com", which uses a homoglyph "1" instead of "l", unlike the official "gitlab.com". Link shims hide the malicious domain.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'Okta Support <support@okta.com>',
+        subject: 'MFA Reset Required',
+        body: '<div class="header" style="background-color: #007DC1; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5k7n9qZ.png" alt="Okta Logo" style="height: 30px;"></div><p>Dear User,<br>Your Okta MFA settings need to be reset. Complete the process <a href="https://okta-login.security.com/reset" onmouseover="showURL(\'https://okta-login.security.com/reset\')" onmouseout="hideURL()">here</a>.<br>Okta Support Team</p>',
+        isPhishing: true,
+        feedback: 'This is a phishing email. The link points to "okta-login.security.com", a subdomain of "security.com", not the official "okta.com". Subdomain masking mimics legitimate Okta domains.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extremely Difficult',
+        sender: 'Jira Support',
+        subject: 'Ticket Update',
+        body: '[Jira] Ticket #JRA-456 needs your attention. View at <a href="https://%6a%69%72%61.com/ticket" onmouseover="showURL(\'https://%6a%69%72%61.com/ticket\')" onmouseout="hideURL()">jira.com/ticket</a>.',
+        isPhishing: true,
+        feedback: 'This is a smishing scam. The link uses URL encoding "%6a%69%72%61" to mask "jira.com", but it directs to a phishing site, not the official "jira.atlassian.com". Encoded URLs obscure malicious intent.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'Salesforce Security <security@salesforce.com>',
+        subject: 'OAuth App Authorization Request',
+        body: '<div class="header" style="background-color: #00A1E0; padding: 10px; text-align: center;"><img src="https://i.imgur.com/4m8k7qZ.png" alt="Salesforce Logo" style="height: 30px;"></div><p>Dear Admin,<br>A new app requested OAuth access to your Salesforce account. Authorize it <a href="https://sa1esforce.com/authorize" onmouseover="showURL(\'https://sa1esforce.com/authorize\')" onmouseout="hideURL()">here</a>.<br>Salesforce Team</p>',
+        isPhishing: true,
+        feedback: 'This is a phishing email. The link uses a homoglyph "1" in "sa1esforce.com", not the official "salesforce.com". Homoglyphs are subtle and require careful inspection.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extremely Difficult',
+        sender: 'Azure AD',
+        subject: 'Security Alert',
+        body: '[Azure AD] Suspicious login detected. Secure your account at <a href="https://azure.ad-login.com/verify" onmouseover="showURL(\'https://azure.ad-login.com/verify\')" onmouseout="hideURL()">azure.ad-login.com/verify</a>.',
+        isPhishing: true,
+        feedback: 'This is a smishing scam. The link points to "azure.ad-login.com", a deceptive subdomain, not the official "azure.microsoft.com". Subdomain masking exploits trust in Azure branding.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'Atlassian Support <support@atlassian.com>',
+        subject: 'Account Verification Required',
+        body: '<div class="header" style="background-color: #0052CC; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3n7k6qZ.png" alt="Atlassian Logo" style="height: 30px;"></div><p>Dear User,<br>Your Atlassian account needs verification. Log in <a href="https://bit.ly/4aBc789" onmouseover="showURL(\'https://at1assian.com/verify\')" onmouseout="hideURL()">here</a>.<br>Atlassian Team</p>',
+        isPhishing: true,
+        feedback: 'This is a phishing email. The bit.ly link redirects to "at1assian.com", which uses a homoglyph "1" instead of "l", unlike the official "atlassian.com". Link shims obscure the fake domain.'
+      },
+      {
+        type: 'sms',
+        difficulty: 'Extremely Difficult',
+        sender: 'PayPal Security',
+        subject: 'Account Security Alert',
+        body: '[PayPal] Unusual activity detected. Verify at <a href="https://tinyurl.com/xy789def" onmouseover="showURL(\'https://paypa1.com/verify\')" onmouseout="hideURL()">tinyurl.com/xy789def</a>.',
+        isPhishing: true,
+        feedback: 'This is a smishing scam. The tinyurl.com link redirects to "paypa1.com", using a homoglyph "1" instead of "l", not the official "paypal.com". Link shims hide the malicious domain.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'Google Cloud Support <support@cloud.google.com>',
+        subject: 'Billing Account Update',
+        body: '<div class="header" style="background-color: #4285F4; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Cloud Logo" style="height: 30px;"></div><p>Dear Customer,<br>Your Google Cloud billing account was updated on May 12, 2025. Review details <a href="https://console.cloud.google.com/billing" onmouseover="showURL(\'https://console.cloud.google.com/billing\')" onmouseout="hideURL()">here</a>.<br>Google Cloud Team</p>',
+        isPhishing: false,
+        feedback: 'This is a legitimate email. The sender’s domain is "cloud.google.com", and the link points to the official Google Cloud billing page.'
+      },
+      {
+        type: 'email',
+        difficulty: 'Extremely Difficult',
+        sender: 'GitHub Support <support@github.com>',
+        subject: 'GitHub Actions Workflow Status',
+        body: '<div class="header" style="background-color: #24292E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6p8n9qZ.png" alt="GitHub Logo" style="height: 30px;"></div><p>Dear Developer,<br>Your GitHub Actions workflow completed on May 12, 2025. View results <a href="https://github.com/actions" onmouseover="showURL(\'https://github.com/actions\')" onmouseout="hideURL()">here</a>.<br>GitHub Team</p>',
+        isPhishing: false,
+        feedback: 'This is a legitimate email. The sender’s domain is "github.com", and the link points to the official GitHub Actions page.'
       }
     ];
 
@@ -543,13 +632,24 @@
       return array;
     }
 
-    // Select 10 questions: 6 Phishing, 4 Legitimate
+    // Select 10 questions: 2 Easy, 3 Extremely Difficult, 5 Medium/Hard
     function getRandomQuestions() {
-      const phishingQuestions = questions.filter(q => q.isPhishing);
-      const legitimateQuestions = questions.filter(q => !q.isPhishing);
-      const phishingSelection = shuffle([...phishingQuestions]).slice(0, 6);
-      const legitimateSelection = shuffle([...legitimateQuestions]).slice(0, 4);
-      return shuffle([...phishingSelection, ...legitimateSelection]);
+      // Filter questions by difficulty
+      const easyQuestions = questions.filter(q => q.difficulty === 'Easy');
+      const mediumQuestions = questions.filter(q => q.difficulty === 'Medium');
+      const hardQuestions = questions.filter(q => q.difficulty === 'Hard');
+      const extremelyDifficultQuestions = questions.filter(q => q.difficulty === 'Extremely Difficult');
+      
+      // Select 2 Easy and 3 Extremely Difficult
+      const easySelection = shuffle([...easyQuestions]).slice(0, 2);
+      const extremelyDifficultSelection = shuffle([...extremelyDifficultQuestions]).slice(0, 3);
+      
+      // Combine Medium and Hard questions, then select 5
+      const mediumHardQuestions = [...mediumQuestions, ...hardQuestions];
+      const mediumHardSelection = shuffle([...mediumHardQuestions]).slice(0, 5);
+      
+      // Combine and shuffle all selected questions
+      return shuffle([...easySelection, ...extremelyDifficultSelection, ...mediumHardSelection]);
     }
 
     let currentQuestions = getRandomQuestions();
