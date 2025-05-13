@@ -1,3 +1,4 @@
+console.log('questions.js loaded');
 window.questions = [
   // Easy Questions (8: 5 Phishing, 3 Legitimate)
   {
@@ -343,7 +344,7 @@ window.questions = [
     subject: 'Confirm Meeting Schedule',
     body: '[Anna Cruz] Please confirm our meeting tomorrow at 10 AM. Details at <a href="https://cоmpany.com/meeting" onmouseover="showURL(\'https://cоmpany.com/meeting\')" onmouseout="hideURL()">company.com/meeting</a>.',
     isPhishing: true,
-    feedback: 'The domain "cоmpany.com" uses a Cyrillic "о" instead of Latin "o", unlike a legitimate company domain. Spear phishing SMS “[Anna Cruz] Please confirm our meeting tomorrow at 10 AM. Details at <a href="https://cоmpany.com/meeting" onmouseover="showURL('https://cоmpany.com/meeting')" onmouseout="hideURL()">company.com/meeting</a>.'may impersonate coworkers.'
+    feedback: 'The domain "cоmpany.com" uses a Cyrillic "о" instead of Latin "o", unlike a legitimate company domain. Spear phishing SMS may impersonate coworkers.'
   },
   {
     type: 'email',
@@ -351,7 +352,7 @@ window.questions = [
     sender: 'HR Department <hr@company.com>',
     subject: 'Update Your Payroll Information',
     body: '<div class="header" style="background-color: #f5f5f5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8Zf5Y2Z.png" alt="Company Logo" style="height: 30px;"></div><p>Dear Employee,<br>Due to a system upgrade, please update your payroll details <a href="https://company.hr-portal.com/update" onmouseover="showURL(\'https://company.hr-portal.com/update\')" onmouseout="hideURL()">here</a> by May 15, 2025.<br>HR Team</p>',
-    isPhishing: true,
+    isPhishing: caseSensitive: true,
     feedback: 'The link points to "company.hr-portal.com", a subdomain of "hr-portal.com", not the official company domain. Spear phishing targets employees with fake HR requests.'
   },
   {
