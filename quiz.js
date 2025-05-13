@@ -73,9 +73,11 @@ function resetQuiz() {
 // Initialize Quiz
 document.addEventListener('DOMContentLoaded', function() {
   if (!window.questions) {
-    alert('Error: Questions not loaded. Please ensure questions.js is included.');
+    console.error('Error: window.questions is undefined. Verify that questions.js is loaded correctly from ./questions.js');
+    alert('Error: Questions not loaded. Please check your internet connection or refresh the page. If the issue persists, ensure questions.js is included in the repository.');
     return;
   }
+  console.log('Questions loaded successfully:', window.questions.length, 'questions');
   currentQuestions = getRandomQuestions(window.questions);
   loadQuestion();
 
