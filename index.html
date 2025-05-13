@@ -81,7 +81,7 @@
         subject: 'Your Apple ID Has Been Locked!',
         body: '<div class="header" style="background-color: #f5f5f5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8Zf5Y2Z.png" alt="Apple Logo" style="height: 30px;"></div><p>Dear Customer,<br>Your Apple ID has been locked due to suspicious activity. Please verify your identity by clicking <a href="http://applee-id.com/verify" onmouseover="showURL(\'http://applee-id.com/verify\')" onmouseout="hideURL()">here</a> within 24 hours.<br>Thank you,<br>Apple Team</p>',
         isPhishing: true,
-        feedback: 'The sender’s domain "applee-id.com" has an extra "e" and is not the official "apple.com". Urgent requests to verify accounts via links are common phishing tactics.'
+        feedback: 'This is a phishing email. The sender’s domain "applee-id.com" has an extra "e" and is not the official "apple.com". Urgent requests to verify accounts via links are common phishing tactics.'
       },
       {
         type: 'sms',
@@ -90,7 +90,7 @@
         subject: 'Account Security Warning',
         body: '[BPI] Your account is at risk! Secure it now at <a href="http://bpi-security.com/verify" onmouseover="showURL(\'http://bpi-security.com/verify\')" onmouseout="hideURL()">bpi-security.com/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "bpi-security.com" is not BPI’s official "bpi.com.ph". Banks don’t send SMS with links to secure accounts.'
+        feedback: 'This is a smishing attempt. The domain "bpi-security.com" is not BPI’s official "bpi.com.ph". Banks don’t send SMS with links to secure accounts.'
       },
       {
         type: 'email',
@@ -99,7 +99,7 @@
         subject: 'Your Subscription Receipt',
         body: '<div class="header" style="background-color: #1DB954; padding: 10px; text-align: center;"><img src="https://i.imgur.com/7k5qJ2X.png" alt="Spotify Logo" style="height: 30px;"></div><p>Dear Member,<br>Your Spotify Premium subscription has been renewed. Next billing: May 20, 2025. View details <a href="https://www.spotify.com/account" onmouseover="showURL(\'https://www.spotify.com/account\')" onmouseout="hideURL()">here</a>.<br>Enjoy your music!<br>Spotify Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "spotify.com", and the link points to the official Spotify website. The message lacks urgent or suspicious requests.'
+        feedback: 'This is a legitimate email. The sender’s domain is "spotify.com", and the link points to the official Spotify website. The message lacks urgent or suspicious requests.'
       },
       {
         type: 'sms',
@@ -108,7 +108,7 @@
         subject: 'Order Confirmation',
         body: '[Shopee] Your order #123456 will arrive by May 15, 2025. Track it at <a href="https://shopee.ph/track" onmouseover="showURL(\'https://shopee.ph/track\')" onmouseout="hideURL()">shopee.ph/track</a>.',
         isPhishing: false,
-        feedback: 'The domain "shopee.ph" is official, and the message provides specific order details without urgent requests.'
+        feedback: 'This is a legitimate SMS. The domain "shopee.ph" is official, and the message provides specific order details without urgent requests.'
       },
       {
         type: 'email',
@@ -117,7 +117,7 @@
         subject: 'Urgent: Account Verification Required',
         body: '<div class="header" style="background-color: #0078D4; padding: 10px; text-align: center;"><img src="https://i.imgur.com/9p2x3kQ.png" alt="Microsoft Logo" style="height: 30px;"></div><p>Dear User,<br>Your Microsoft account needs verification. Click <a href="http://micr0soft.com/verify" onmouseover="showURL(\'http://micr0soft.com/verify\')" onmouseout="hideURL()">here</a> to avoid suspension.<br>Microsoft Team</p>',
         isPhishing: true,
-        feedback: 'The domain "micr0soft.com" uses a zero instead of an "o", unlike the official "microsoft.com".'
+        feedback: 'This is a phishing email. The domain "micr0soft.com" uses a zero instead of an "o", unlike the official "microsoft.com".'
       },
       {
         type: 'sms',
@@ -126,7 +126,7 @@
         subject: 'Account Issue',
         body: '[Lazada] Your account has an issue! Fix it at <a href="http://lazadaa.ph/fix" onmouseover="showURL(\'http://lazadaa.ph/fix\')" onmouseout="hideURL()">lazadaa.ph/fix</a>.',
         isPhishing: true,
-        feedback: 'The domain "lazadaa.ph" has an extra "a" and is not the official "lazada.com.ph".'
+        feedback: 'This is a smishing attempt. The domain "lazadaa.ph" has an extra "a" and is not the official "lazada.com.ph".'
       },
       {
         type: 'email',
@@ -135,7 +135,7 @@
         subject: 'Your Google Drive Storage Update',
         body: '<div class="header" style="background-color: #ffffff; padding: 10px; text-align: center; border-bottom: 1px solid #e0e0e0;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Logo" style="height: 30px;"></div><p>Dear User,<br>Your Google Drive storage plan has been updated. View details <a href="https://drive.google.com/settings" onmouseover="showURL(\'https://drive.google.com/settings\')" onmouseout="hideURL()">here</a>.<br>Google Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "google.com", and the link points to the official Google Drive settings page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "google.com", and the link points to the official Google Drive settings page.'
       },
       {
         type: 'sms',
@@ -144,7 +144,7 @@
         subject: 'Account Issue',
         body: '[PayMaya] Your account has an issue! Fix it at <a href="http://paymayaa.com/fix" onmouseover="showURL(\'http://paymayaa.com/fix\')" onmouseout="hideURL()">paymayaa.com/fix</a>.',
         isPhishing: true,
-        feedback: 'The domain "paymayaa.com" has an extra "a" and is not the official "paymaya.com".'
+        feedback: 'This is a smishing attempt. The domain "paymayaa.com" has an extra "a" and is not the official "paymaya.com".'
       },
       // Medium Questions (14: 9 Phishing, 5 Legitimate)
       {
@@ -154,7 +154,7 @@
         subject: 'Update Your Account Details',
         body: '<div class="header" style="background-color: #003087; padding: 10px; text-align: center;"><img src="https://i.imgur.com/4k6y2pX.png" alt="BDO Logo" style="height: 30px;"></div><p>Dear Client,<br>We’ve updated our security policies. Update your details <a href="http://bdo-online.ph/update" onmouseover="showURL(\'http://bdo-online.ph/update\')" onmouseout="hideURL()">here</a> within 48 hours to avoid restrictions.<br>BDO Team</p>',
         isPhishing: true,
-        feedback: 'The sender’s domain "bdo.com.ph" is legitimate, but the link points to "bdo-online.ph", a fake domain. Always verify URLs.'
+        feedback: 'This is a phishing email. The sender’s domain "bdo.com.ph" is legitimate, but the link points to "bdo-online.ph", a fake domain. Always verify URLs.'
       },
       {
         type: 'sms',
@@ -163,7 +163,7 @@
         subject: 'Claim Your Cashback',
         body: '[GCash] You’ve earned P500 cashback! Claim it at <a href="http://gcash-promo.co/claim" onmouseover="showURL(\'http://gcash-promo.co/claim\')" onmouseout="hideURL()">gcash-promo.co/claim</a>.',
         isPhishing: true,
-        feedback: 'The domain "gcash-promo.co" is not GCash’s official "gcash.com". Unsolicited cashback offers are common phishing tactics.'
+        feedback: 'This is a smishing scam. The domain "gcash-promo.co" is not GCash’s official "gcash.com". Unsolicited cashback offers are common phishing tactics.'
       },
       {
         type: 'email',
@@ -172,7 +172,7 @@
         subject: 'Order #789012 Shipped',
         body: '<div class="header" style="background-color: #232F3E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3p7x4qZ.png" alt="Amazon Logo" style="height: 30px;"></div><p>Dear Customer,<br>Your order #789012 has shipped and will arrive by May 18, 2025. Track it <a href="https://www.amazon.com/orders" onmouseover="showURL(\'https://www.amazon.com/orders\')" onmouseout="hideURL()">here</a>.<br>Amazon Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "amazon.com", and the link points to the official Amazon orders page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "amazon.com", and the link points to the official Amazon orders page.'
       },
       {
         type: 'sms',
@@ -181,7 +181,7 @@
         subject: 'Payment Reminder',
         body: '[Globe] Your bill of P1200 is due May 15, 2025. Pay now at <a href="https://www.globe.com.ph/pay" onmouseover="showURL(\'https://www.globe.com.ph/pay\')" onmouseout="hideURL()">globe.com.ph/pay</a>.',
         isPhishing: false,
-        feedback: 'The domain "globe.com.ph" is official, and the message provides specific bill details.'
+        feedback: 'This is a legitimate SMS. The domain "globe.com.ph" is official, and the message provides specific bill details.'
       },
       {
         type: 'email',
@@ -190,7 +190,7 @@
         subject: 'Action Required: Verify Payment',
         body: '<div class="header" style="background-color: #003087; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6m8k9pZ.png" alt="PayPal Logo" style="height: 30px;"></div><p>Dear User,<br>A recent payment needs verification. Confirm it <a href="http://paypal-verify.com/confirm" onmouseover="showURL(\'http://paypal-verify.com/confirm\')" onmouseout="hideURL()">here</a> within 24 hours.<br>PayPal Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "paypal-verify.com", not the official "paypal.com". Verify payments directly on PayPal’s website.'
+        feedback: 'This is a phishing email. The link points to "paypal-verify.com", not the official "paypal.com". Verify payments directly on PayPal’s website.'
       },
       {
         type: 'sms',
@@ -199,7 +199,7 @@
         subject: 'Exclusive Voucher',
         body: '[Shopee] Get P200 off your next purchase! Claim at <a href="http://shopee-voucher.ph/claim" onmouseover="showURL(\'http://shopee-voucher.ph/claim\')" onmouseout="hideURL()">shopee-voucher.ph/claim</a>.',
         isPhishing: true,
-        feedback: 'The domain "shopee-voucher.ph" is not Shopee’s official "shopee.ph". Verify vouchers in the Shopee app.'
+        feedback: 'This is a smishing scam. The domain "shopee-voucher.ph" is not Shopee’s official "shopee.ph". Verify vouchers in the Shopee app.'
       },
       {
         type: 'email',
@@ -208,7 +208,7 @@
         subject: 'Your Account Settings',
         body: '<div class="header" style="background-color: #E50914; padding: 10px; text-align: center;"><img src="https://i.imgur.com/2k7p9qZ.png" alt="Netflix Logo" style="height: 30px;"></div><p>Dear Member,<br>Your Netflix account settings were updated on May 12, 2025. Review them <a href="https://www.netflix.com/account" onmouseover="showURL(\'https://www.netflix.com/account\')" onmouseout="hideURL()">here</a>.<br>Netflix Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "netflix.com", and the link points to the official Netflix account page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "netflix.com", and the link points to the official Netflix account page.'
       },
       {
         type: 'sms',
@@ -217,7 +217,7 @@
         subject: 'Card Alert',
         body: '[BPI] Suspicious transaction detected. Verify it at <a href="http://bpi-secure.ph/verify" onmouseover="showURL(\'http://bpi-secure.ph/verify\')" onmouseout="hideURL()">bpi-secure.ph/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "bpi-secure.ph" is not BPI’s official "bpi.com.ph". Contact BPI directly.'
+        feedback: 'This is a smishing attempt. The domain "bpi-secure.ph" is not BPI’s official "bpi.com.ph". Contact BPI directly.'
       },
       {
         type: 'email',
@@ -226,7 +226,7 @@
         subject: 'Connection Request',
         body: '<div class="header" style="background-color: #0077B5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8p9k3qZ.png" alt="LinkedIn Logo" style="height: 30px;"></div><p>Dear User,<br>You have a new connection request. View it <a href="https://www.linkedin.com/notifications" onmouseover="showURL(\'https://www.linkedin.com/notifications\')" onmouseout="hideURL()">here</a>.<br>LinkedIn Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "linkedin.com", and the link points to the official LinkedIn notifications page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "linkedin.com", and the link points to the official LinkedIn notifications page.'
       },
       {
         type: 'sms',
@@ -235,7 +235,7 @@
         subject: 'Flash Sale Alert',
         body: '[Lazada] Flash sale starts now! Shop at <a href="http://lazada-sale.ph/shop" onmouseover="showURL(\'http://lazada-sale.ph/shop\')" onmouseout="hideURL()">lazada-sale.ph/shop</a>.',
         isPhishing: true,
-        feedback: 'The domain "lazada-sale.ph" is not Lazada’s official "lazada.com.ph". Shop via the official app.'
+        feedback: 'This is a smishing scam. The domain "lazada-sale.ph" is not Lazada’s official "lazada.com.ph". Shop via the official app.'
       },
       {
         type: 'email',
@@ -244,7 +244,7 @@
         subject: 'Security Alert: New Login',
         body: '<div class="header" style="background-color: #ffffff; padding: 10px; text-align: center; border-bottom: 1px solid #e0e0e0;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Logo" style="height: 30px;"></div><p>Dear User,<br>A new login to your Google account was detected. If this wasn’t you, secure your account <a href="http://google-security.com/secure" onmouseover="showURL(\'http://google-security.com/secure\')" onmouseout="hideURL()">here</a>.<br>Google Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "google-security.com", not the official "google.com". Secure accounts via Google’s official site.'
+        feedback: 'This is a phishing email. The link points to "google-security.com", not the official "google.com". Secure accounts via Google’s official site.'
       },
       {
         type: 'email',
@@ -253,7 +253,7 @@
         subject: 'Your File Shared Successfully',
         body: '<div class="header" style="background-color: #0061FF; padding: 10px; text-align: center;"><img src="https://i.imgur.com/1k9m3qZ.png" alt="Dropbox Logo" style="height: 30px;"></div><p>Dear User,<br>Your file was shared successfully on May 12, 2025. View details <a href="https://www.dropbox.com/activity" onmouseover="showURL(\'https://www.dropbox.com/activity\')" onmouseout="hideURL()">here</a>.<br>Dropbox Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "dropbox.com", and the link points to the official Dropbox activity page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "dropbox.com", and the link points to the official Dropbox activity page.'
       },
       {
         type: 'sms',
@@ -262,7 +262,7 @@
         subject: 'Security Alert',
         body: '[UnionBank] Suspicious activity detected. Secure your account at <a href="http://unionbank-secure.ph/verify" onmouseover="showURL(\'http://unionbank-secure.ph/verify\')" onmouseout="hideURL()">unionbank-secure.ph/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "unionbank-secure.ph" is not UnionBank’s official "unionbankph.com". Contact UnionBank directly.'
+        feedback: 'This is a smishing attempt. The domain "unionbank-secure.ph" is not UnionBank’s official "unionbankph.com". Contact UnionBank directly.'
       },
       {
         type: 'email',
@@ -271,7 +271,7 @@
         subject: 'Verify Your Recent Purchase',
         body: '<div class="header" style="background-color: #E53238; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5m7n4qZ.png" alt="eBay Logo" style="height: 30px;"></div><p>Dear Customer,<br>Your recent purchase needs verification. Confirm it <a href="http://ebay-verify.com/confirm" onmouseover="showURL(\'http://ebay-verify.com/confirm\')" onmouseout="hideURL()">here</a> within 24 hours.<br>eBay Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "ebay-verify.com", not the official "ebay.com". Verify purchases directly on eBay’s website.'
+        feedback: 'This is a phishing email. The link points to "ebay-verify.com", not the official "ebay.com". Verify purchases directly on eBay’s website.'
       },
       // Hard Questions (14: 8 Phishing, 6 Legitimate)
       {
@@ -281,7 +281,7 @@
         subject: 'Security Verification Required',
         body: '<div class="header" style="background-color: #0071CE; padding: 10px; text-align: center;"><img src="https://i.imgur.com/9q2x4kZ.png" alt="GCash Logo" style="height: 30px;"></div><p>Dear User,<br>We detected unusual activity. Verify your account <a href="http://gcash-login.ph/verify" onmouseover="showURL(\'http://gcash-login.ph/verify\')" onmouseout="hideURL()">here</a> to avoid suspension.<br>GCash Team</p>',
         isPhishing: true,
-        feedback: 'The sender’s domain "gcash.com" is legitimate, but the link points to "gcash-login.ph". Spoofed sender addresses are common in phishing.'
+        feedback: 'This is a phishing email. The sender’s domain "gcash.com" is legitimate, but the link points to "gcash-login.ph". Spoofed sender addresses are common in phishing.'
       },
       {
         type: 'sms',
@@ -290,7 +290,7 @@
         subject: 'Payment Issue',
         body: '[PayPal] Your payment failed. Resolve it at <a href="http://paypal-resolve.com/fix" onmouseover="showURL(\'http://paypal-resolve.com/fix\')" onmouseout="hideURL()">paypal-resolve.com/fix</a>.',
         isPhishing: true,
-        feedback: 'The domain "paypal-resolve.com" is not PayPal’s official "paypal.com". Verify payments via the PayPal app.'
+        feedback: 'This is a smishing attempt. The domain "paypal-resolve.com" is not PayPal’s official "paypal.com". Verify payments via the PayPal app.'
       },
       {
         type: 'email',
@@ -299,7 +299,7 @@
         subject: 'New Device Login Detected',
         body: '<div class="header" style="background-color: #003087; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6m8k9pZ.png" alt="PayPal Logo" style="height: 30px;"></div><p>Dear User,<br>A login from a new device was detected on May 12, 2025. If this was you, ignore this. If not, secure your account <a href="https://www.paypal.com/signin" onmouseover="showURL(\'https://www.paypal.com/signin\')" onmouseout="hideURL()">here</a>.<br>PayPal Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "paypal.com", and the link points to the official PayPal login page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "paypal.com", and the link points to the official PayPal login page.'
       },
       {
         type: 'sms',
@@ -308,7 +308,7 @@
         subject: 'Account Verification',
         body: '[Globe] Verify your account due to a security update at <a href="http://globe-verify.ph/verify" onmouseover="showURL(\'http://globe-verify.ph/verify\')" onmouseout="hideURL()">globe-verify.ph/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "globe-verify.ph" is not Globe’s official "globe.com.ph". Verify accounts via official channels.'
+        feedback: 'This is a smishing scam. The domain "globe-verify.ph" is not Globe’s official "globe.com.ph". Verify accounts via official channels.'
       },
       {
         type: 'email',
@@ -317,7 +317,7 @@
         subject: 'Action Required: Account Review',
         body: '<div class="header" style="background-color: #0078D4; padding: 10px; text-align: center;"><img src="https://i.imgur.com/9p2x3kQ.png" alt="Microsoft Logo" style="height: 30px;"></div><p>Dear User,<br>Your Microsoft account needs review. Log in <a href="http://microsoft-login.com/review" onmouseover="showURL(\'http://microsoft-login.com/review\')" onmouseout="hideURL()">here</a> to complete the process.<br>Microsoft Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "microsoft-login.com", not the official "microsoft.com". Always access Microsoft services directly.'
+        feedback: 'This is a phishing email. The link points to "microsoft-login.com", not the official "microsoft.com". Always access Microsoft services directly.'
       },
       {
         type: 'sms',
@@ -326,7 +326,7 @@
         subject: 'Order Issue',
         body: '[Shopee] Your order #456789 has an issue. Fix it at <a href="http://shopee-fix.ph/order" onmouseover="showURL(\'http://shopee-fix.ph/order\')" onmouseout="hideURL()">shopee-fix.ph/order</a>.',
         isPhishing: true,
-        feedback: 'The domain "shopee-fix.ph" is not Shopee’s official "shopee.ph". Check orders in the Shopee app.'
+        feedback: 'This is a smishing attempt. The domain "shopee-fix.ph" is not Shopee’s official "shopee.ph". Check orders in the Shopee app.'
       },
       {
         type: 'email',
@@ -335,7 +335,7 @@
         subject: 'Account Activity Alert',
         body: '<div class="header" style="background-color: #232F3E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3p7x4qZ.png" alt="Amazon Logo" style="height: 30px;"></div><p>Dear Customer,<br>We detected unusual activity on your Amazon account. Secure it <a href="https://www.amazon.com/signin" onmouseover="showURL(\'https://www.amazon.com/signin\')" onmouseout="hideURL()">here</a>.<br>Amazon Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "amazon.com", and the link points to the official Amazon sign-in page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "amazon.com", and the link points to the official Amazon sign-in page.'
       },
       {
         type: 'sms',
@@ -344,7 +344,7 @@
         subject: 'Security Alert',
         body: '[BDO] Suspicious login detected. Secure your account at <a href="http://bdo-login.ph/secure" onmouseover="showURL(\'http://bdo-login.ph/secure\')" onmouseout="hideURL()">bdo-login.ph/secure</a>.',
         isPhishing: true,
-        feedback: 'The domain "bdo-login.ph" is not BDO’s official "bdo.com.ph". Contact BDO directly.'
+        feedback: 'This is a smishing scam. The domain "bdo-login.ph" is not BDO’s official "bdo.com.ph". Contact BDO directly.'
       },
       {
         type: 'email',
@@ -353,7 +353,7 @@
         subject: 'New Message in Your Inbox',
         body: '<div class="header" style="background-color: #0077B5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8p9k3qZ.png" alt="LinkedIn Logo" style="height: 30px;"></div><p>Dear User,<br>You have a new message in your LinkedIn inbox. View it <a href="https://www.linkedin.com/messaging" onmouseover="showURL(\'https://www.linkedin.com/messaging\')" onmouseout="hideURL()">here</a>.<br>LinkedIn Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "linkedin.com", and the link points to the official LinkedIn messaging page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "linkedin.com", and the link points to the official LinkedIn messaging page.'
       },
       {
         type: 'sms',
@@ -362,7 +362,7 @@
         subject: 'Transaction Confirmation',
         body: '[PayMaya] Your payment of P2000 was successful. View details at <a href="https://www.paymaya.com/transactions" onmouseover="showURL(\'https://www.paymaya.com/transactions\')" onmouseout="hideURL()">paymaya.com/transactions</a>.',
         isPhishing: false,
-        feedback: 'The domain "paymaya.com" is official, and the message provides specific transaction details.'
+        feedback: 'This is a legitimate SMS. The domain "paymaya.com" is official, and the message provides specific transaction details.'
       },
       {
         type: 'email',
@@ -371,7 +371,7 @@
         subject: 'Google Account Recovery',
         body: '<div class="header" style="background-color: #ffffff; padding: 10px; text-align: center; border-bottom: 1px solid #e0e0e0;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Logo" style="height: 30px;"></div><p>Dear User,<br>Your Google account recovery settings were updated. Review them <a href="https://accounts.google.com/signin" onmouseover="showURL(\'https://accounts.google.com/signin\')" onmouseout="hideURL()">here</a>.<br>Google Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "google.com", and the link points to the official Google sign-in page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "google.com", and the link points to the official Google sign-in page.'
       },
       {
         type: 'email',
@@ -380,7 +380,7 @@
         subject: 'Workspace Invitation',
         body: '<div class="header" style="background-color: #4A154B; padding: 10px; text-align: center;"><img src="https://i.imgur.com/7n8k5qZ.png" alt="Slack Logo" style="height: 30px;"></div><p>Dear User,<br>You’ve been invited to join a Slack workspace. Accept the invitation <a href="http://slack-invite.com/join" onmouseover="showURL(\'http://slack-invite.com/join\')" onmouseout="hideURL()">here</a>.<br>Slack Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "slack-invite.com", not the official "slack.com". Verify Slack invitations directly in the app.'
+        feedback: 'This is a phishing email. The link points to "slack-invite.com", not the official "slack.com". Verify Slack invitations directly in the app.'
       },
       {
         type: 'sms',
@@ -389,7 +389,7 @@
         subject: 'Account Alert',
         body: '[Metrobank] Unusual activity detected. Secure your account at <a href="http://metrobank-secure.ph/verify" onmouseover="showURL(\'http://metrobank-secure.ph/verify\')" onmouseout="hideURL()">metrobank-secure.ph/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "metrobank-secure.ph" is not Metrobank’s official "metrobank.com.ph". Contact Metrobank directly.'
+        feedback: 'This is a smishing attempt. The domain "metrobank-secure.ph" is not Metrobank’s official "metrobank.com.ph". Contact Metrobank directly.'
       },
       {
         type: 'email',
@@ -398,9 +398,9 @@
         subject: 'Your Meeting Scheduled',
         body: '<div class="header" style="background-color: #0B5CFF; padding: 10px; text-align: center;"><img src="https://i.imgur.com/4p8m6qZ.png" alt="Zoom Logo" style="height: 30px;"></div><p>Dear User,<br>Your meeting is scheduled for May 13, 2025. View details <a href="https://zoom.us/meetings" onmouseover="showURL(\'https://zoom.us/meetings\')" onmouseout="hideURL()">here</a>.<br>Zoom Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "zoom.us", and the link points to the official Zoom meetings page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "zoom.us", and the link points to the official Zoom meetings page.'
       },
-      // Extremely Difficult Questions (24 existing + 10 new = 34: 28 Phishing, 6 Legitimate)
+      // Extremely Difficult Questions (24: 18 Phishing, 6 Legitimate)
       {
         type: 'email',
         difficulty: 'Extremely Difficult',
@@ -408,7 +408,7 @@
         subject: 'Security Alert: Unusual Activity',
         body: '<div class="header" style="background-color: #003087; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6m8k9pZ.png" alt="PayPal Logo" style="height: 30px;"></div><p>Dear User,<br>We detected a login attempt from an unrecognized device. Please review the activity <a href="https://www.paypaI.com/security" onmouseover="showURL(\'https://www.paypaI.com/security\')" onmouseout="hideURL()">here</a>.<br>PayPal Security Team</p>',
         isPhishing: true,
-        feedback: 'The link uses a homoglyph (capital "I" instead of "l") in "paypaI.com", making it appear as "paypal.com". Even experts can miss this without close inspection.'
+        feedback: 'This is a sophisticated phishing email. The link uses a homoglyph (capital "I" instead of "l") in "paypaI.com", making it appear as "paypal.com". Even experts can miss this without close inspection.'
       },
       {
         type: 'sms',
@@ -417,7 +417,7 @@
         subject: 'Account Verification',
         body: '[GCash] Due to a security update, verify your account at <a href="https://gcаsh.com/verify" onmouseover="showURL(\'https://gcаsh.com/verify\')" onmouseout="hideURL()">gcash.com/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "gcаsh.com" uses a Cyrillic "а" instead of Latin "a", making it nearly identical to "gcash.com". Such homoglyph attacks are extremely hard to spot.'
+        feedback: 'This is a smishing scam. The domain "gcаsh.com" uses a Cyrillic "а" instead of Latin "a", making it nearly identical to "gcash.com". Such homoglyph attacks are extremely hard to spot.'
       },
       {
         type: 'email',
@@ -426,7 +426,7 @@
         subject: 'Azure Account Access Notification',
         body: '<div class="header" style="background-color: #0078D4; padding: 10px; text-align: center;"><img src="https://i.imgur.com/9p2x3kQ.png" alt="Microsoft Logo" style="height: 30px;"></div><p>Dear Admin,<br>A new login to your Azure account was detected on May 12, 2025. If this was you, no action is needed. If not, secure your account <a href="https://account.microsoft.com/security" onmouseover="showURL(\'https://account.microsoft.com/security\')" onmouseout="hideURL()">here</a>.<br>Microsoft Azure Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "microsoft.com", and the link points to the official Microsoft security page. The message follows Azure’s standard notification format.'
+        feedback: 'This is a legitimate email. The sender’s domain is "microsoft.com", and the link points to the official Microsoft security page. The message follows Azure’s standard notification format.'
       },
       {
         type: 'sms',
@@ -435,7 +435,7 @@
         subject: 'Transaction Alert',
         body: '[BDO] A transaction of P10,000 was initiated. Confirm it at <a href="https://bdo.com.ph.secure-login.com/confirm" onmouseover="showURL(\'https://bdo.com.ph.secure-login.com/confirm\')" onmouseout="hideURL()">bdo.com.ph.secure-login.com/confirm</a>.',
         isPhishing: true,
-        feedback: 'The domain "bdo.com.ph.secure-login.com" is a subdomain of "secure-login.com", not BDO’s official "bdo.com.ph". Subdomain tricks are hard to detect.'
+        feedback: 'This is a smishing attempt. The domain "bdo.com.ph.secure-login.com" is a subdomain of "secure-login.com", not BDO’s official "bdo.com.ph". Subdomain tricks are hard to detect.'
       },
       {
         type: 'email',
@@ -444,7 +444,7 @@
         subject: 'Action Required: Verify Your Identity',
         body: '<div class="header" style="background-color: #232F3E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3p7x4qZ.png" alt="Amazon Logo" style="height: 30px;"></div><p>Dear Customer,<br>To comply with our policies, please verify your identity <a href="https://amazon-security.com/verify" onmouseover="showURL(\'https://amazon-security.com/verify\')" onmouseout="hideURL()">here</a>. Failure to verify may limit your account.<br>Amazon Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "amazon-security.com", not "amazon.com". The sender’s domain is spoofed, and the request mimics Amazon’s legitimate verification emails.'
+        feedback: 'This is a phishing email. The link points to "amazon-security.com", not "amazon.com". The sender’s domain is spoofed, and the request mimics Amazon’s legitimate verification emails.'
       },
       {
         type: 'sms',
@@ -453,7 +453,7 @@
         subject: 'Order Verification',
         body: '[Shopee] Your order #987654 needs verification. Complete it at <a href="https://shopee.ph-login.com/verify" onmouseover="showURL(\'https://shopee.ph-login.com/verify\')" onmouseout="hideURL()">shopee.ph-login.com/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "shopee.ph-login.com" is not Shopee’s official "shopee.ph". Subdomain-based phishing is a subtle tactic.'
+        feedback: 'This is a smishing scam. The domain "shopee.ph-login.com" is not Shopee’s official "shopee.ph". Subdomain-based phishing is a subtle tactic.'
       },
       {
         type: 'email',
@@ -462,7 +462,7 @@
         subject: 'New Device Sign-In',
         body: '<div class="header" style="background-color: #ffffff; padding: 10px; text-align: center; border-bottom: 1px solid #e0e0e0;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Logo" style="height: 30px;"></div><p>Dear User,<br>A sign-in from a new device was detected on May 12, 2025. If this was you, ignore this. If not, review activity <a href="https://myaccount.google.com/security" onmouseover="showURL(\'https://myaccount.google.com/security\')" onmouseout="hideURL()">here</a>.<br>Google Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "google.com", and the link points to the official Google security page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "google.com", and the link points to the official Google security page.'
       },
       {
         type: 'sms',
@@ -471,7 +471,7 @@
         subject: 'Security Update',
         body: '[PayMaya] Update your security settings at <a href="https://paymaya.com.security-update.com/update" onmouseover="showURL(\'https://paymaya.com.security-update.com/update\')" onmouseout="hideURL()">paymaya.com.security-update.com/update</a>.',
         isPhishing: true,
-        feedback: 'The domain "paymaya.com.security-update.com" is a subdomain of "security-update.com", not PayMaya’s official "paymaya.com".'
+        feedback: 'This is a smishing attempt. The domain "paymaya.com.security-update.com" is a subdomain of "security-update.com", not PayMaya’s official "paymaya.com".'
       },
       {
         type: 'email',
@@ -480,7 +480,7 @@
         subject: 'OAuth App Authorization',
         body: '<div class="header" style="background-color: #0077B5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8p9k3qZ.png" alt="LinkedIn Logo" style="height: 30px;"></div><p>Dear User,<br>A new app requested access to your LinkedIn account. Authorize it <a href="https://linkedin-oauth.com/authorize" onmouseover="showURL(\'https://linkedin-oauth.com/authorize\')" onmouseout="hideURL()">here</a> or deny if unrecognized.<br>LinkedIn Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "linkedin-oauth.com", not "linkedin.com". OAuth phishing mimics legitimate app authorization requests.'
+        feedback: 'This is a phishing email. The link points to "linkedin-oauth.com", not "linkedin.com". OAuth phishing mimics legitimate app authorization requests.'
       },
       {
         type: 'email',
@@ -489,7 +489,7 @@
         subject: 'Your Subscription Details',
         body: '<div class="header" style="background-color: #E50914; padding: 10px; text-align: center;"><img src="https://i.imgur.com/2k7p9qZ.png" alt="Netflix Logo" style="height: 30px;"></div><p>Dear Member,<br>Your Netflix subscription details have been updated. Review them <a href="https://www.netflix.com/account" onmouseover="showURL(\'https://www.netflix.com/account\')" onmouseout="hideURL()">here</a>.<br>Netflix Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "netflix.com", and the link points to the official Netflix account page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "netflix.com", and the link points to the official Netflix account page.'
       },
       {
         type: 'email',
@@ -498,7 +498,7 @@
         subject: 'Creative Cloud Subscription Alert',
         body: '<div class="header" style="background-color: #FF0000; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3k9n7qZ.png" alt="Adobe Logo" style="height: 30px;"></div><p>Dear User,<br>Your Creative Cloud subscription needs verification. Log in <a href="https://adobe-verifу.com/login" onmouseover="showURL(\'https://adobe-verifу.com/login\')" onmouseout="hideURL()">here</a> to avoid interruption.<br>Adobe Team</p>',
         isPhishing: true,
-        feedback: 'The link uses a Cyrillic "у" in "adobe-verifу.com", not the official "adobe.com". Homoglyph attacks are extremely deceptive.'
+        feedback: 'This is a phishing email. The link uses a Cyrillic "у" in "adobe-verifу.com", not the official "adobe.com". Homoglyph attacks are extremely deceptive.'
       },
       {
         type: 'sms',
@@ -507,7 +507,7 @@
         subject: 'Account Verification',
         body: '[Lazada] Verify your account at <a href="https://lazada.com.ph.account-verify.com/verify" onmouseover="showURL(\'https://lazada.com.ph.account-verify.com/verify\')" onmouseout="hideURL()">lazada.com.ph.account-verify.com/verify</a>.',
         isPhishing: true,
-        feedback: 'The domain "lazada.com.ph.account-verify.com" is a subdomain of "account-verify.com", not Lazada’s official "lazada.com.ph".'
+        feedback: 'This is a smishing scam. The domain "lazada.com.ph.account-verify.com" is a subdomain of "account-verify.com", not Lazada’s official "lazada.com.ph".'
       },
       {
         type: 'email',
@@ -516,7 +516,7 @@
         subject: 'Repository Access Notification',
         body: '<div class="header" style="background-color: #24292E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6p8n9qZ.png" alt="GitHub Logo" style="height: 30px;"></div><p>Dear User,<br>A new login to your GitHub account was detected on May 12, 2025. If this was you, ignore this. If not, secure your account <a href="https://github.com/settings/security" onmouseover="showURL(\'https://github.com/settings/security\')" onmouseout="hideURL()">here</a>.<br>GitHub Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "github.com", and the link points to the official GitHub security settings page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "github.com", and the link points to the official GitHub security settings page.'
       },
       {
         type: 'sms',
@@ -525,7 +525,7 @@
         subject: 'Promo Registration',
         body: '[Globe] Register for our latest promo at <a href="https://glоbe.com.ph/promo" onmouseover="showURL(\'https://glоbe.com.ph/promo\')" onmouseout="hideURL()">globe.com.ph/promo</a>.',
         isPhishing: true,
-        feedback: 'The domain "glоbe.com.ph" uses a Cyrillic "о" instead of Latin "o", making it nearly identical to "globe.com.ph". Homoglyph attacks are highly deceptive.'
+        feedback: 'This is a smishing scam. The domain "glоbe.com.ph" uses a Cyrillic "о" instead of Latin "o", making it nearly identical to "globe.com.ph". Homoglyph attacks are highly deceptive.'
       },
       {
         type: 'email',
@@ -534,7 +534,7 @@
         subject: 'SSO Login Verification Required',
         body: '<div class="header" style="background-color: #FF9900; padding: 10px; text-align: center;"><img src="https://i.imgur.com/2n3k8qZ.png" alt="AWS Logo" style="height: 30px;"></div><p>Dear Admin,<br>Your AWS SSO session requires verification due to a new login attempt. Complete the process <a href="https://bit.ly/3xYz123" onmouseover="showURL(\'https://aws-security-login.com/verify\')" onmouseout="hideURL()">here</a> within 24 hours.<br>AWS Security Team</p>',
         isPhishing: true,
-        feedback: 'The bit.ly link redirects to "aws-security-login.com", not the official "aws.amazon.com". Link shims like bit.ly obscure malicious destinations, and the domain is a fake subdomain.'
+        feedback: 'This is a phishing email. The bit.ly link redirects to "aws-security-login.com", not the official "aws.amazon.com". Link shims like bit.ly obscure malicious destinations, and the domain is a fake subdomain.'
       },
       {
         type: 'sms',
@@ -543,7 +543,7 @@
         subject: 'Pipeline Failure Alert',
         body: '[GitLab] Your pipeline #7890 failed. Review details at <a href="https://tinyurl.com/yz789abc" onmouseover="showURL(\'https://git1ab.com/pipeline\')" onmouseout="hideURL()">tinyurl.com/yz789abc</a>.',
         isPhishing: true,
-        feedback: 'The tinyurl.com link redirects to "git1ab.com", which uses a homoglyph "1" instead of "l", unlike the official "gitlab.com". Link shims hide the malicious domain.'
+        feedback: 'This is a smishing scam. The tinyurl.com link redirects to "git1ab.com", which uses a homoglyph "1" instead of "l", unlike the official "gitlab.com". Link shims hide the malicious domain.'
       },
       {
         type: 'email',
@@ -552,7 +552,7 @@
         subject: 'MFA Reset Required',
         body: '<div class="header" style="background-color: #007DC1; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5k7n9qZ.png" alt="Okta Logo" style="height: 30px;"></div><p>Dear User,<br>Your Okta MFA settings need to be reset. Complete the process <a href="https://okta-login.security.com/reset" onmouseover="showURL(\'https://okta-login.security.com/reset\')" onmouseout="hideURL()">here</a>.<br>Okta Support Team</p>',
         isPhishing: true,
-        feedback: 'The link points to "okta-login.security.com", a subdomain of "security.com", not the official "okta.com". Subdomain masking mimics legitimate Okta domains.'
+        feedback: 'This is a phishing email. The link points to "okta-login.security.com", a subdomain of "security.com", not the official "okta.com". Subdomain masking mimics legitimate Okta domains.'
       },
       {
         type: 'sms',
@@ -561,7 +561,7 @@
         subject: 'Ticket Update',
         body: '[Jira] Ticket #JRA-456 needs your attention. View at <a href="https://%6a%69%72%61.com/ticket" onmouseover="showURL(\'https://%6a%69%72%61.com/ticket\')" onmouseout="hideURL()">jira.com/ticket</a>.',
         isPhishing: true,
-        feedback: 'The link uses URL encoding "%6a%69%72%61" to mask "jira.com", but it directs to a phishing site, not the official "jira.atlassian.com". Encoded URLs obscure malicious intent.'
+        feedback: 'This is a smishing scam. The link uses URL encoding "%6a%69%72%61" to mask "jira.com", but it directs to a phishing site, not the official "jira.atlassian.com". Encoded URLs obscure malicious intent.'
       },
       {
         type: 'email',
@@ -570,7 +570,7 @@
         subject: 'OAuth App Authorization Request',
         body: '<div class="header" style="background-color: #00A1E0; padding: 10px; text-align: center;"><img src="https://i.imgur.com/4m8k7qZ.png" alt="Salesforce Logo" style="height: 30px;"></div><p>Dear Admin,<br>A new app requested OAuth access to your Salesforce account. Authorize it <a href="https://sa1esforce.com/authorize" onmouseover="showURL(\'https://sa1esforce.com/authorize\')" onmouseout="hideURL()">here</a>.<br>Salesforce Team</p>',
         isPhishing: true,
-        feedback: 'The link uses a homoglyph "1" in "sa1esforce.com", not the official "salesforce.com". Homoglyphs are subtle and require careful inspection.'
+        feedback: 'This is a phishing email. The link uses a homoglyph "1" in "sa1esforce.com", not the official "salesforce.com". Homoglyphs are subtle and require careful inspection.'
       },
       {
         type: 'sms',
@@ -579,7 +579,7 @@
         subject: 'Security Alert',
         body: '[Azure AD] Suspicious login detected. Secure your account at <a href="https://azure.ad-login.com/verify" onmouseover="showURL(\'https://azure.ad-login.com/verify\')" onmouseout="hideURL()">azure.ad-login.com/verify</a>.',
         isPhishing: true,
-        feedback: 'The link points to "azure.ad-login.com", a deceptive subdomain, not the official "azure.microsoft.com". Subdomain masking exploits trust in Azure branding.'
+        feedback: 'This is a smishing scam. The link points to "azure.ad-login.com", a deceptive subdomain, not the official "azure.microsoft.com". Subdomain masking exploits trust in Azure branding.'
       },
       {
         type: 'email',
@@ -588,7 +588,7 @@
         subject: 'Account Verification Required',
         body: '<div class="header" style="background-color: #0052CC; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3n7k6qZ.png" alt="Atlassian Logo" style="height: 30px;"></div><p>Dear User,<br>Your Atlassian account needs verification. Log in <a href="https://bit.ly/4aBc789" onmouseover="showURL(\'https://at1assian.com/verify\')" onmouseout="hideURL()">here</a>.<br>Atlassian Team</p>',
         isPhishing: true,
-        feedback: 'The bit.ly link redirects to "at1assian.com", which uses a homoglyph "1" instead of "l", unlike the official "atlassian.com". Link shims obscure the fake domain.'
+        feedback: 'This is a phishing email. The bit.ly link redirects to "at1assian.com", which uses a homoglyph "1" instead of "l", unlike the official "atlassian.com". Link shims obscure the fake domain.'
       },
       {
         type: 'sms',
@@ -597,7 +597,7 @@
         subject: 'Account Security Alert',
         body: '[PayPal] Unusual activity detected. Verify at <a href="https://tinyurl.com/xy789def" onmouseover="showURL(\'https://paypa1.com/verify\')" onmouseout="hideURL()">tinyurl.com/xy789def</a>.',
         isPhishing: true,
-        feedback: 'The tinyurl.com link redirects to "paypa1.com", using a homoglyph "1" instead of "l", not the official "paypal.com". Link shims hide the malicious domain.'
+        feedback: 'This is a smishing scam. The tinyurl.com link redirects to "paypa1.com", using a homoglyph "1" instead of "l", not the official "paypal.com". Link shims hide the malicious domain.'
       },
       {
         type: 'email',
@@ -606,7 +606,7 @@
         subject: 'Billing Account Update',
         body: '<div class="header" style="background-color: #4285F4; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5n8k2jY.png" alt="Google Cloud Logo" style="height: 30px;"></div><p>Dear Customer,<br>Your Google Cloud billing account was updated on May 12, 2025. Review details <a href="https://console.cloud.google.com/billing" onmouseover="showURL(\'https://console.cloud.google.com/billing\')" onmouseout="hideURL()">here</a>.<br>Google Cloud Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "cloud.google.com", and the link points to the official Google Cloud billing page.'
+        feedback: 'This is a legitimate email. The sender’s domain is "cloud.google.com", and the link points to the official Google Cloud billing page.'
       },
       {
         type: 'email',
@@ -615,99 +615,7 @@
         subject: 'GitHub Actions Workflow Status',
         body: '<div class="header" style="background-color: #24292E; padding: 10px; text-align: center;"><img src="https://i.imgur.com/6p8n9qZ.png" alt="GitHub Logo" style="height: 30px;"></div><p>Dear Developer,<br>Your GitHub Actions workflow completed on May 12, 2025. View results <a href="https://github.com/actions" onmouseover="showURL(\'https://github.com/actions\')" onmouseout="hideURL()">here</a>.<br>GitHub Team</p>',
         isPhishing: false,
-        feedback: 'The sender’s domain is "github.com", and the link points to the official GitHub Actions page.'
-      },
-      // New Spear Phishing Questions (5)
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'Jane Doe, CEO <jane.doe@acmеcorp.com>',
-        subject: 'Urgent: Approve Vendor Payment',
-        body: '<div class="header" style="background-color: #004B87; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3k9n7qZ.png" alt="AcmeCorp Logo" style="height: 30px;"></div><p>Dear CFO,<br>I need you to approve a vendor payment of $50,000 by EOD. Review and sign the invoice <a href="https://acmecorp.co/approve" onmouseover="showURL(\'https://acmecorp.co/approve\')" onmouseout="hideURL()">here</a>. Do not share this link.<br>Best,<br>Jane</p>',
-        isPhishing: true,
-        feedback: 'The sender’s domain "acmеcorp.com" uses a Cyrillic "е" instead of Latin "e", unlike the official "acmecorp.com". Spear phishing often impersonates executives with urgent financial requests.'
-      },
-      {
-        type: 'sms',
-        difficulty: 'Extremely Difficult',
-        sender: 'HR Department',
-        subject: 'Update Your Payroll Details',
-        body: '[AcmeCorp HR] Dear John, please update your payroll details for Q2 2025 at <a href="https://hr.acmecorp-login.com/update" onmouseover="showURL(\'https://hr.acmecorp-login.com/update\')" onmouseout="hideURL()">hr.acmecorp-login.com/update</a>.',
-        isPhishing: true,
-        feedback: 'The domain "hr.acmecorp-login.com" is a subdomain of "acmecorp-login.com", not AcmeCorp’s official domain. Spear phishing targets employees with personalized HR requests.'
-      },
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'IT Admin <admin@acmecorp.com>',
-        subject: 'Reset Your SSO Credentials',
-        body: '<div class="header" style="background-color: #004B87; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3k9n7qZ.png" alt="AcmeCorp Logo" style="height: 30px;"></div><p>Dear Jane,<br>Your SSO credentials need a reset due to a security audit. Complete the process <a href="https://%73%73%6f.acmecorp.com/reset" onmouseover="showURL(\'https://%73%73%6f.acmecorp.com/reset\')" onmouseout="hideURL()">here</a> within 24 hours.<br>IT Team</p>',
-        isPhishing: true,
-        feedback: 'The link uses URL encoding "%73%73%6f" to mask "sso.acmecorp.com", but it directs to a phishing site, not AcmeCorp’s official SSO portal. Spear phishing often mimics internal IT requests.'
-      },
-      {
-        type: 'sms',
-        difficulty: 'Extremely Difficult',
-        sender: 'AcmeCorp Finance',
-        subject: 'Confirm Wire Transfer',
-        body: '[AcmeCorp] Dear CFO, confirm a $100,000 wire transfer at <a href="https://bit.ly/7pQr890" onmouseover="showURL(\'https://finance.acmecorp-secure.com/confirm\')" onmouseout="hideURL()">bit.ly/7pQr890</a>. Urgent!',
-        isPhishing: true,
-        feedback: 'The bit.ly link redirects to "finance.acmecorp-secure.com", a fake subdomain, not AcmeCorp’s official domain. Spear phishing uses shortened URLs to hide malicious financial requests.'
-      },
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'Sarah Lee, HR Director <sarah.lee@acmecоrp.com>',
-        subject: 'Confidential: Your Q2 Performance Review',
-        body: '<div class="header" style="background-color: #004B87; padding: 10px; text-align: center;"><img src="https://i.imgur.com/3k9n7qZ.png" alt="AcmeCorp Logo" style="height: 30px;"></div><p>Dear John,<br>Your Q2 performance review is ready. Access it <a href="https://hr.acmecorp.co/review" onmouseover="showURL(\'https://hr.acmecorp.co/review\')" onmouseout="hideURL()">here</a> and provide feedback by May 15.<br>Best,<br>Sarah</p>',
-        isPhishing: true,
-        feedback: 'The sender’s domain "acmecоrp.com" uses a Cyrillic "о" instead of Latin "o", unlike "acmecorp.com". Spear phishing targets employees with personalized, confidential HR requests.'
-      },
-      // New Social Media Phishing Questions (5)
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'LinkedIn Notifications <notifications@Iinkedin.com>',
-        subject: 'New Connection Request from Jane Doe',
-        body: '<div class="header" style="background-color: #0077B5; padding: 10px; text-align: center;"><img src="https://i.imgur.com/8p9k3qZ.png" alt="LinkedIn Logo" style="height: 30px;"></div><p>Dear User,<br>Jane Doe, CTO at AcmeCorp, sent you a connection request. Accept it <a href="https://Iinkedin.com/connect" onmouseover="showURL(\'https://Iinkedin.com/connect\')" onmouseout="hideURL()">here</a>.<br>LinkedIn Team</p>',
-        isPhishing: true,
-        feedback: 'The sender’s domain and link use a homoglyph capital "I" in "Iinkedin.com", not the official "linkedin.com". Social media phishing often mimics connection requests.'
-      },
-      {
-        type: 'sms',
-        difficulty: 'Extremely Difficult',
-        sender: 'X Support',
-        subject: 'Urgent: Verify Your Account',
-        body: '[X] Your account is at risk! Verify it at <a href="https://tinyurl.com/ab123xyz" onmouseover="showURL(\'https://x.com-login.security-auth.com/verify\')" onmouseout="hideURL()">tinyurl.com/ab123xyz</a>.',
-        isPhishing: true,
-        feedback: 'The tinyurl.com link redirects to "x.com-login.security-auth.com", a subdomain of "security-auth.com", not X’s official "x.com". Social media phishing uses shortened URLs to obscure malicious domains.'
-      },
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'Instagram Security <security@instаgram.com>',
-        subject: 'Authorize New App Access',
-        body: '<div class="header" style="background-color: #E1306C; padding: 10px; text-align: center;"><img src="https://i.imgur.com/4p8m6qZ.png" alt="Instagram Logo" style="height: 30px;"></div><p>Dear User,<br>A new app requested access to your Instagram account. Authorize it <a href="https://instаgram.com/oauth" onmouseover="showURL(\'https://instаgram.com/oauth\')" onmouseout="hideURL()">here</a> or deny if unrecognized.<br>Instagram Team</p>',
-        isPhishing: true,
-        feedback: 'The sender’s domain and link use a Cyrillic "а" in "instаgram.com", not the official "instagram.com". OAuth phishing on social media mimics legitimate app authorization prompts.'
-      },
-      {
-        type: 'sms',
-        difficulty: 'Extremely Difficult',
-        sender: 'TikTok Alerts',
-        subject: 'New Message from Friend',
-        body: '[TikTok] Your friend Jane sent you a message! View it at <a href="https://tiktok.com.message-alert.com/view" onmouseover="showURL(\'https://tiktok.com.message-alert.com/view\')" onmouseout="hideURL()">tiktok.com.message-alert.com/view</a>.',
-        isPhishing: true,
-        feedback: 'The domain "tiktok.com.message-alert.com" is a subdomain of "message-alert.com", not TikTok’s official "tiktok.com". Social media phishing impersonates contacts to lure users.'
-      },
-      {
-        type: 'email',
-        difficulty: 'Extremely Difficult',
-        sender: 'Facebook Notifications <notifications@facebоok.com>',
-        subject: 'New Login Attempt Detected',
-        body: '<div class="header" style="background-color: #1877F2; padding: 10px; text-align: center;"><img src="https://i.imgur.com/5k7n9qZ.png" alt="Facebook Logo" style="height: 30px;"></div><p>Dear User,<br>A new login attempt was detected on May 13, 2025. Secure your account <a href="https://bit.ly/9zAb456" onmouseover="showURL(\'https://facebоok.com/security\')" onmouseout="hideURL()">here</a>.<br>Facebook Team</p>',
-        isPhishing: true,
-        feedback: 'The sender’s domain and link use a Cyrillic "о" in "facebоok.com", and the bit.ly link redirects to the fake domain, not the official "facebook.com". Social media phishing combines homoglyphs and link shims.'
+        feedback: 'This is a legitimate email. The sender’s domain is "github.com", and the link points to the official GitHub Actions page.'
       }
     ];
 
@@ -731,15 +639,15 @@
       const mediumQuestions = questions.filter(q => q.difficulty === 'Medium');
       const hardQuestions = questions.filter(q => q.difficulty === 'Hard');
       const extremelyDifficultQuestions = questions.filter(q => q.difficulty === 'Extremely Difficult');
-
+      
       // Select 2 Easy and 3 Extremely Difficult
       const easySelection = shuffle([...easyQuestions]).slice(0, 2);
       const extremelyDifficultSelection = shuffle([...extremelyDifficultQuestions]).slice(0, 3);
-
+      
       // Combine Medium and Hard questions, then select 5
       const mediumHardQuestions = [...mediumQuestions, ...hardQuestions];
       const mediumHardSelection = shuffle([...mediumHardQuestions]).slice(0, 5);
-
+      
       // Combine and shuffle all selected questions
       return shuffle([...easySelection, ...extremelyDifficultSelection, ...mediumHardSelection]);
     }
@@ -788,8 +696,8 @@
       const title = document.getElementById('feedback-title');
       const message = document.getElementById('feedback-message');
       title.textContent = isCorrect ? 'Correct!' : 'Incorrect';
-      title.className = isCorrect ? 'text-green-600 text-lg sm:text-xl font-bold mb-4' : 'text-red-600 text-lg sm:text-xl font-bold mb-4';
-      message.textContent = feedback; // Use textContent for plain text
+      title.className = isCorrect ? 'text-green-600' : 'text-red-600';
+      message.textContent = feedback;
       modal.classList.remove('hidden');
     }
 
@@ -802,4 +710,50 @@
         resultsMessage.textContent = 'Excellent job! You’re well-equipped to spot phishing attempts. Keep practicing to stay sharp.';
       } else if (score >= 5) {
         resultsMessage.textContent = 'Good effort! You caught some phishing attempts, but review the feedback to improve your skills.';
+      } else {
+        resultsMessage.textContent = 'Needs improvement. Phishing attacks are tricky! Retake the quiz and focus on the feedback to learn common red flags.';
       }
+    }
+
+    // Event Listeners
+    document.getElementById('legitimate-btn').addEventListener('click', () => {
+      const question = currentQuestions[currentQuestion];
+      const isCorrect = !question.isPhishing;
+      if (isCorrect) score++;
+      document.getElementById('score').textContent = score;
+      showFeedback(isCorrect, question.feedback);
+    });
+
+    document.getElementById('phishing-btn').addEventListener('click', () => {
+      const question = currentQuestions[currentQuestion];
+      const isCorrect = question.isPhishing;
+      if (isCorrect) score++;
+      document.getElementById('score').textContent = score;
+      showFeedback(isCorrect, question.feedback);
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      document.getElementById('feedback-modal').classList.add('hidden');
+      currentQuestion++;
+      if (currentQuestion < totalQuestions) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById('score').textContent = score;
+      document.getElementById('quiz-container').classList.remove('hidden');
+      document.getElementById('results-container').classList.add('hidden');
+      currentQuestions = getRandomQuestions();
+      loadQuestion();
+    });
+
+    // Initialize Quiz
+    loadQuestion();
+  </script>
+</body>
+</html>
