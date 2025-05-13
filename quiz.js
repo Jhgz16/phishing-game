@@ -3,34 +3,6 @@ var score = 0;
 var totalQuestions = 10;
 var currentQuestions = [];
 
-function loadQuestions(callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', './questions.js', true);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        // Execute questions.js to define window.questions
-        var script = document.createElement('script');
-        script.text = xhr.responseText;
-        document.head.appendChild(script);
-        // Wait for script to execute
-        setTimeout(function() {
-          if (window.questions) {
-            callback(window.questions);
-          } else {
-            console.error('Failed to load questions');
-            alert('Error loading quiz questions. Please refresh the page.');
-          }
-        }, 100);
-      } else {
-        console.error('Failed to load questions.js:', xhr.status);
-        alert('Error loading quiz questions. Please refresh the page.');
-      }
-    }
-  };
-  xhr.send();
-}
-
 function getRandomQuestions(questions) {
   var easyQuestions = questions.filter(function(q) { return q.difficulty === 'Easy'; });
   var mediumQuestions = questions.filter(function(q) { return q.difficulty === 'Medium'; });
@@ -100,37 +72,39 @@ function resetQuiz() {
 
 // Initialize Quiz
 document.addEventListener('DOMContentLoaded', function() {
-  loadQuestions(function(questions) {
-    currentQuestions = getRandomQuestions(questions);
-    loadQuestion();
+  if (!window.questions) {
+    alert('Error: Questions not loaded. Please ensure questions.js is included.');
+    return;
+  }
+  currentQuestions = getRandomQuestions(window.questions);
+  loadQuestion();
 
-    // Event Listeners
-    document.getElementById('legitimate-btn').addEventListener('click', function() {
-      var question = currentQuestions[currentQuestion];
-      var isCorrect = !question.isPhishing;
-      if (isCorrect) score++;
-      document.getElementById('score').textContent = score;
-      showFeedback(isCorrect, question.feedback);
-    });
-
-    document.getElementById('phishing-btn').addEventListener('click', function() {
-      var question = currentQuestions[currentQuestion];
-      var isCorrect = question.isPhishing;
-      if (isCorrect) score++;
-      document.getElementById('score').textContent = score;
-      showFeedback(isCorrect, question.feedback);
-    });
-
-    document.getElementById('next-btn').addEventListener('click', function() {
-      document.getElementById('feedback-modal').classList.add('hidden');
-      currentQuestion++;
-      if (currentQuestion < totalQuestions) {
-        loadQuestion();
-      } else {
-        showResults();
-      }
-    });
-
-    document.getElementById('restart-btn').addEventListener('click', resetQuiz);
+  // Event Listeners
+  document.getElementById('legitimate-btn').addEventListener('click', function() {
+    var question = currentQuestions[currentQuestion];
+    var isCorrect = !question.isPhishing;
+    if (isCorrect) score++;
+    document.getElementById('score').textContent = score;
+    showFeedback(isCorrect, question.feedback);
   });
+
+  document.getElementById('phishing-btn').addEventListener('click', function() {
+    var question = currentQuestions[currentQuestion];
+    var isCorrect = question.isPhishing;
+    if (isCorrect) score++;
+    document.getElementById('score').textContent = score;
+    showFeedback(isCorrect, question.feedback);
+  });
+
+  document.getElementById('next-btn').addEventListener('click', function() {
+    document.getElementById('feedback-modal').classList.add('hidden');
+    currentQuestion++;
+    if (currentQuestion < totalQuestions) {
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  document.getElementById('restart-btn').addEventListener('click', resetQuiz);
 });
